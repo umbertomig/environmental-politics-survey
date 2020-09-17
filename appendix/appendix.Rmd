@@ -1,0 +1,1648 @@
+---
+title: |
+       | Supplementary Materials for "Safety First: The Microfoundations of Nuclear Proliferation"
+author: 
+- "Guilherme N. Fasolin[^fasolin]"
+- "Umberto Mignozzetti[^mignozzetti]"
+- "Matias Spektor[^spektor]"
+date: August 25, 2020
+fontfamily: libertine
+fontawesome: yes
+fontsize: 12pt
+monospace-url: yes
+spacing: double
+papersize: a4paper
+bibliography: references.bib
+biblio-style: apalike
+output:
+  pdf_document:
+    citation_package: natbib
+    fig_caption: yes
+    number_sections: yes
+    toc: true
+    keep_tex: no
+    template: template.latex
+---
+
+\appendix
+
+[^fasolin]: Research Associate, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <guilherme.fasolin@fgv.br>, <https://github.com/GuilhermeFasolin>.
+
+[^mignozzetti]: Visiting Assistant Professor, Department of Quantitative Theory and Methods, Emory University. Contact: [umberto.mignozzetti@emory.edu](mailto:umberto.mignozzetti@emory.edu), <http://umbertomig.com>.
+
+[^spektor]: Associate Professor, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <matias.spektor@fgv.br>, <https://www.matiasspektor.com/>.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+#####
+## Initializing
+#####
+
+# Start
+rm(list=ls())
+
+# R CRAN
+r <- getOption("repos")
+r["CRAN"] <- "http://cran.us.r-project.org"; options(repos = r)
+
+# Install required packages
+pkgs <- c('tidyverse', 'readxl', 'stringr', 
+          'lmtest', 'sandwich', 'stargazer',
+          'haven', 'survey', 'GDAtools',
+          'weights','knitr','broom','gtools',
+          'huxtable', 'compareGroups', 'lfe',
+          'kableExtra', 'interplot', 'gridExtra',
+          'miceadds')
+
+installIfNot <- function(x) {
+  if(x %in% rownames(installed.packages()) == FALSE) 
+    install.packages(x, dependencies = T)
+} 
+invisible(lapply(pkgs, installIfNot))
+
+# Load packages
+invisible(lapply(pkgs, require, character.only = T))
+rm(pkgs, installIfNot, r)
+
+# Load datasets
+load('data/nuclearProliferationSurvey.RData')
+```
+
+\newpage
+
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{0pt}
+
+# Analysis Wave One \label{sec:w1}
+
+## Descriptive Statistics
+
+In the wave 1 dataset (`wave1` R object), we have the following variables:
+
+1. **`nquest`**: 9-digit DataFolha Respondent Code.
+2. **`trstatus`**: Treatment Status.
+3. **`age`**: Age.
+4. **`female`**: Dummy for Female Respondent.
+5. **`income`**: 8-brackets income levels.
+6. **`region`**: Brazilian region.
+7. **`hsmore`**: Dummy for High School or more of education.
+8. **`religion`**: 4-brackets religion levels.
+9.  **`outcbin`**: Dummy for support for Nuclear Proliferation.
+10. **`outccont`**: 4-levels Likert Scale Support for Nuclear Proliferation.
+11. **`conservation`**: Conservation scale is composed by tradition, conformity, and security values. These values are associated with protecting a group from internal and external threats.
+12. **`powerful`**: Treatment status denoting a powerful enemy threatening Brazil.
+13. **`protection`**: Treatment status denoting a superpower reassurance that the superpower will defend Brazil in case of attack.
+14. **`trustedbrgov`**: Treatment status denoting that the Brazilian government trusts the superpower protection.
+15. **`wts`**: Weights computed by the DataFolha Statistics Team.
+16. **`amcons`**: Above median in Conservation.
+17. **`evang`**: Dummy for Evangelical respondent.
+18. **`more5mw`**: More than five minimum wage salaries.
+19. **`trstatus2`**: Treatment status in the main results.
+20. **`trstatusR1`**: First variation treatment status for robustness.
+21. **`trstatusR2`**: Second variation treatment status for robustness.
+22. **`trstatusR3`**: Third variation treatment status for robustness.
+
+The original Portuguese version of the questionnaire follows in [here](XXXX). We also provide an English translation in [here](XXXX). The descriptive statistics follow below.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatus,age,female,income,region,
+         hsmore,religion,outcbin,outccont, conservation) %>%
+  mutate(female = factor(female, 
+                         labels = c('No', 'Yes')),
+         hsmore = factor(hsmore, 
+                         labels = c('No', 'Yes'))) %>%
+  rename(`Treatment Status` = trstatus,
+         `Age` = age,
+         `Female` = female,
+         `Income` = income,
+         `Region` = region,
+         `High School or more` = hsmore,
+         `Religion` = religion,
+         `Prop. Supporting Proliferation` = outcbin,
+         `Should Proliferate (Likert)` = outccont,
+         `Conservation Scale` = conservation)
+```
+
+```{r, results='hide'}
+export2latex(descrTable(~., digits = 2, show.p.overall = F, show.all = T, data = aux))
+```
+
+\begin{longtable}{lcc}\caption{Summary descriptives table}\\
+    \hline  
+     &     [ALL]     & \multirow{2}{*}{ N  }\\ 
+ &    N=2001     &      \\ 
+  
+    \hline
+    \hline     
+    \endfirsthead 
+    \multicolumn{3}{l}{\tablename\ \thetable{} \textit{-- continued from previous page}}\\ 
+    \hline
+     &     [ALL]     & \multirow{2}{*}{ N  }\\ 
+ &    N=2001     &      \\ 
+
+    \hline
+    \hline  
+    \endhead   
+    \hline
+    \multicolumn{3}{l}{\textit{continued on next page}} \\ 
+    \endfoot   
+    \multicolumn{3}{l}{}  \\ 
+    \endlastfoot 
+    Treatment Status: &               & 2001\\ 
+$\qquad$No enemy & 288 (14.39\%)  &     \\ 
+$\qquad$Weak enemy & 284 (14.19\%)  &     \\ 
+$\qquad$Powerful enemy & 285 (14.24\%)  &     \\ 
+$\qquad$Powerful enemy and no protection & 287 (14.34\%)  &     \\ 
+$\qquad$Powerful enemy and protection & 283 (14.14\%)  &     \\ 
+$\qquad$Powerful enemy and untrusted protection & 290 (14.49\%)  &     \\ 
+$\qquad$Powerful enemy and trusted protection & 284 (14.19\%)  &     \\ 
+Age & 42.80 (16.20) & 2001\\ 
+Female: &               & 2001\\ 
+$\qquad$No & 950 (47.48\%)  &     \\ 
+$\qquad$Yes & 1051 (52.52\%) &     \\ 
+Income: &               & 1928\\ 
+$\qquad$BRL 0.00 to BRL 998.00 & 484 (25.10\%)  &     \\ 
+$\qquad$BRL 999.00 to BRL 1,996.00 & 436 (22.61\%)  &     \\ 
+$\qquad$BRL 1,997.00 to BRL 2,994.00 & 404 (20.95\%)  &     \\ 
+$\qquad$BRL 2,995.00 to BRL 4,990.00 & 337 (17.48\%)  &     \\ 
+$\qquad$BRL 4,991.00 or more & 267 (13.85\%)  &     \\ 
+Region: &               & 2001\\ 
+$\qquad$Southeast & 878 (43.88\%)  &     \\ 
+$\qquad$South & 296 (14.79\%)  &     \\ 
+$\qquad$Northeast & 511 (25.54\%)  &     \\ 
+$\qquad$Center-West &  162 (8.10\%)  &     \\ 
+$\qquad$North &  154 (7.70\%)  &     \\ 
+High School or more: &               & 2001\\ 
+$\qquad$No & 878 (43.88\%)  &     \\ 
+$\qquad$Yes & 1123 (56.12\%) &     \\ 
+Religion: &               & 2001\\ 
+$\qquad$Catholic & 1033 (51.62\%) &     \\ 
+$\qquad$Evangelical Tradicional & 255 (12.74\%)  &     \\ 
+$\qquad$Evangelical Pentecostal & 376 (18.79\%)  &     \\ 
+$\qquad$Others/No Relig. & 337 (16.84\%)  &     \\ 
+Prop. Supporting Proliferation &  0.35 (0.48)  & 1949\\ 
+Should Proliferate (Likert): &               & 1949\\ 
+$\qquad$Strongly disagree & 1019 (52.28\%) &     \\ 
+$\qquad$Somewhat disagree & 251 (12.88\%)  &     \\ 
+$\qquad$Somewhat agree & 216 (11.08\%)  &     \\ 
+$\qquad$Strongly agree & 463 (23.76\%)  &     \\ 
+Conservation Scale &  0.93 (0.13)  & 2001 \\ 
+ 
+    \hline
+    \end{longtable} 
+
+## Treatment Variables
+
+The treatment variables, and how they map each treatment status, is in the Table below.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatus, powerful, protection, trustedbrgov) %>%
+  unique()
+row.names(aux) <- aux$trstatus
+aux <- aux[names(table(aux$trstatus)),]
+row.names(aux) <- NULL
+aux %>%
+  kable(caption = 'All Treatments', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+As more than one treatment status is observationally equivalent, we correct this problem by selecting the primary treatment status. The others were meant to test some literature's hypothesis, but they are not central to our argument. We keep them off the main tables, but we run models for all treatment status in the robustness section of this appendix.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatus2, powerful, protection, trustedbrgov) %>%
+  na.omit() %>%
+  unique()
+row.names(aux) <- aux$trstatus2
+aux <- aux[names(table(aux$trstatus2)),]
+row.names(aux) <- NULL
+aux %>%
+  kable(caption = 'Main Treatment', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The reasoning for selecting this treatment is the following: in the first bracket, the _control status_, there are no enemies. As there are no enemies, it does not make sense to discuss the strength, the backup, and the evaluation of the trustworthiness of the Brazilian government. The second category, the _powerful enemy_, makes sense without priming for backup and protection, to isolate the effect of the threat in the decision-making. The third category, _powerful enemy and untrusted protection_, introduces the threat and an untrusted backup. The last category, _powerful enemy and trusted protection_, varies the protection by adding a trusted protection. In terms of the estimation, this is equivalent to the following Table.
+
+|                |    Trust   |     Trust     |  No Trust  |    No Trust   |
+|----------------|:----------:|:-------------:|:----------:|:-------------:|
+|                | Protection | No Protection | Protection | No Protection |
+|    No Enemy    |  $\beta_1$ |   $\beta_1$   |  $\beta_1$ |   $\beta_1$   |
+| Powerful Enemy |  $\beta_4$ |   $\beta_2$   |  $\beta_3$ |   $\beta_2$   |
+
+Note that $\beta_1$ is similar in all entries in the top row. When there is no enemy, it does not make sense to refer to the enemy's strength, refer to the protection, neither the existence nor the enemy's trustworthiness. Second, note that the second and fourth columns share $\beta_2$ in the second row. When there is no protection, it does not make sense to talk in terms of the government's trust. $\beta_3$ studies the effect of a powerful enemy that offers protection, but the protection is untrusted by the government. Finally, $\beta_4$ discusses the effect of a powerful enemy, with trusted protection.
+
+## Pre-treatment Balance
+
+The pre-treatment variables in the first wave were:
+
+1. Age
+2. Gender
+3. Education
+4. Region
+5. Income
+6. Religion (only wave 1)
+
+We perform two types of balancing tests. For the continuous variables, we perform an F-test. For the categorical variables, we run a Chi-Square test. The results are in the Table \ref{baltestw1}, and are insignificant (p-value above $0.10$). Therefore, we have balance across all treatment levels.
+
+```{r, echo = FALSE}
+# Age
+mod <- aov(age~trstatus, data=wave1, weights = wave1$wts)
+aux <- data.frame(Variable = 'Age',
+                  Stat = 'F',
+                  Value = round(summary(mod)[[1]][1,4], 3),
+                  PValue = round(summary(mod)[[1]][1,5], 3))
+# Gender
+mod <- wtd.chi.sq(wave1$female, 
+                  wave1$trstatus, 
+                  weight = wave1$wts)
+aux <- rbind(aux, data.frame(Variable = 'Gender',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+# Education
+mod <- wtd.chi.sq(wave1$hsmore, 
+                  wave1$trstatus, 
+                  weight = wave1$wts)
+aux <- rbind(aux, data.frame(Variable = 'Education',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+# Region
+mod <- wtd.chi.sq(wave1$region, 
+                  wave1$trstatus, 
+                  weight = wave1$wts)
+aux <- rbind(aux, data.frame(Variable = 'Region',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+# Income
+mod <- wtd.chi.sq(wave1$income, 
+                  wave1$trstatus, 
+                  weight = wave1$wts)
+aux <- rbind(aux, data.frame(Variable = 'Income',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+# Religion
+mod <- wtd.chi.sq(wave1$religion, 
+                  wave1$trstatus, 
+                  weight = wave1$wts)
+aux <- rbind(aux, data.frame(Variable = 'Religion',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+names(aux) <- c('Variable', 'Statistic', 'Value', 'P-Value')
+```
+
+```{r, echo = FALSE}
+aux %>%
+  kable(caption = 'Balance Tests -- Wave 1\\label{baltestw1}', booktabs = T)
+```
+
+
+
+## Main results in the paper
+
+### Main Model
+
+In the main model, we run a regression with the rational determinants of the proliferation decision: a threat from a powerful enemy, a superpower guarantee to moderate this threat, and the beliefs about the seriousness of the guarantee. The results follow in the Table \ref{mainreg}.
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c('No enemy','Powerful enemy', 'Weak enemy'))
+mod[[1]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c("Powerful enemy", 
+             "Powerful enemy and protection"))
+mod[[2]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c('Powerful enemy and trusted protection',
+             'Powerful enemy and untrusted protection'))
+mod[[3]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+aux <- filter(wave1, !is.na(trstatus2))
+mod[[4]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov|0|0|region,
+  data = aux, weights = aux$wts)
+row.names(mod[[4]]$coefficients)[row.names(mod[[4]]$coefficients)=='powerfulYes'] = 'trstatusPowerful enemy'
+row.names(mod[[4]]$coefficients)[row.names(mod[[4]]$coefficients)=='protectionYes'] = 'trstatusPowerful enemy and protection'
+row.names(mod[[4]]$coefficients)[row.names(mod[[4]]$coefficients)=='trustedbrgovYes'] = 'trstatusPowerful enemy and trusted protection'
+row.names(mod[[4]]$beta)[row.names(mod[[4]]$beta)=='powerfulYes'] = 'trstatusPowerful enemy'
+row.names(mod[[4]]$beta)[row.names(mod[[4]]$beta)=='protectionYes'] = 'trstatusPowerful enemy and protection'
+row.names(mod[[4]]$beta)[row.names(mod[[4]]$beta)=='trustedbrgovYes'] = 'trstatusPowerful enemy and trusted protection'
+
+stargazer(mod[[1]],mod[[2]],mod[[3]],mod[[4]],
+          covariate.labels = c('Weak Enemy', 
+                               'Powerful Enemy',
+                               'Protection',
+                               'Trusted Protection'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Main Regressions -- Wave 1',
+          label = 'mainreg',
+          align = T,
+          column.labels = c("Threat",
+                            "Protection",
+                            "Trusted Protection", 
+                            'Full Model'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.', 'Reference category: No Enemy. Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+### Heterogeneous Effects -- Wave 1
+
+In wave 1, we also run heterogeneous effects, first in pre-treatment demographic characteristics: gender, income, education, and religion. Second, in the psychological mediator `Conservation` values. The results follow in Table \ref{heregw1}. All models use the full regression model described in the treatment definition above.
+
+```{r, results = 'hide'}
+## Heterogeneous effects
+mod <- list()
+aux <- filter(wave1, !is.na(trstatus2))
+mod[[1]] <- felm(
+  outcbin ~ (powerful+protection+trustedbrgov)*female|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[2]] <- felm(
+  outcbin ~ (powerful+protection+trustedbrgov)*hsmore|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[3]] <- felm(
+  outcbin ~ (powerful+protection+trustedbrgov)*more5mw|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[4]] <- felm(
+  outcbin ~ (powerful+protection+trustedbrgov)*evang|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[5]] <- felm(
+  outcbin ~ (powerful+protection+trustedbrgov)*conservation|0|0|region,
+  data = aux, weights = aux$wts)
+
+for (i in 1:5) {
+  row.names(mod[[i]]$coefficients)[5] = 'HEVariable'
+  row.names(mod[[i]]$coefficients)[6] = 'powerful*HEVariable'
+  row.names(mod[[i]]$coefficients)[7] = 'protection*HEVariable'
+  row.names(mod[[i]]$coefficients)[8] = 'trusted*HEVariable'
+  row.names(mod[[i]]$beta)[5] = 'HEVariable'
+  row.names(mod[[i]]$beta)[6] = 'powerful*HEVariable'
+  row.names(mod[[i]]$beta)[7] = 'protection*HEVariable'
+  row.names(mod[[i]]$beta)[8] = 'trusted*HEVariable'
+}
+
+stargazer(mod[[1]], mod[[2]], mod[[3]], mod[[4]],mod[[5]],
+          covariate.labels = c('Powerful Enemy',
+                               'Protection',
+                               'Trusted Protection',
+                               'H. E. Variable',
+                               'Powerful Enemy $\\times$ H. E. Variable',
+                               'Protection $\\times$ H. E. Variable',
+                               'Trusted Protection $\\times$ H. E. Variable'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Heterogeneous Effects Regressions -- Wave 1',
+          label = 'heregw1',
+          align = T,
+          column.labels = c('Female',
+                            'High School or More',
+                            'More 5 Min. Wage',
+                            'Evangelical',
+                            'Conservation Scale'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No Enemy. Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01',
+                    'In the top of each column is the Heterogeneous Variable. The outcome variable is the decision to proliferate.'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+\begin{table}[!htbp] \centering 
+  \caption{Heterogeneous Effects Regressions -- Wave 1} 
+  \label{heregw1} 
+  \rotatebox{90}{
+\begin{tabular}{@{\extracolsep{-2pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline \\[-1.8ex] 
+ & \multicolumn{1}{c}{Female} & \multicolumn{1}{c}{High School or More} & \multicolumn{1}{c}{More 5 Min. Wage} & \multicolumn{1}{c}{Evangelical} & \multicolumn{1}{c}{Conservation Scale} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)}\\ 
+\hline \\[-1.8ex] 
+ Powerful Enemy & 0.210^{***} & 0.148^{**} & 0.215^{***} & 0.191^{***} & -0.456^{**} \\ 
+  & (0.016) & (0.068) & (0.034) & (0.042) & (0.193) \\ 
+  Protection & -0.131^{**} & -0.063^{**} & -0.110^{***} & -0.147^{***} & 0.262 \\ 
+  & (0.055) & (0.027) & (0.034) & (0.055) & (0.184) \\ 
+  Trusted Protection & 0.038 & -0.024^{*} & -0.033 & 0.004 & -0.050 \\ 
+  & (0.052) & (0.014) & (0.035) & (0.049) & (0.179) \\ 
+  H. E. Variable & -0.089^{**} & -0.026 & -0.068^{***} & -0.003 & -0.038^{**} \\ 
+  & (0.037) & (0.064) & (0.024) & (0.071) & (0.016) \\ 
+  Powerful Enemy $\times$ H. E. Variable & -0.016 & 0.095 & -0.097^{*} & 0.046 & 0.119^{***} \\ 
+  & (0.073) & (0.066) & (0.056) & (0.149) & (0.035) \\ 
+  Protection $\times$ H. E. Variable & 0.016 & -0.116^{**} & -0.051 & 0.049 & -0.070^{**} \\ 
+  & (0.062) & (0.053) & (0.062) & (0.171) & (0.035) \\ 
+  Trusted Protection $\times$ H. E. Variable & -0.100 & 0.025 & 0.149 & -0.046 & 0.007 \\ 
+  & (0.100) & (0.054) & (0.112) & (0.090) & (0.032) \\ 
+  Constant & 0.315^{***} & 0.283^{***} & 0.277^{***} & 0.268^{***} & 0.483^{***} \\ 
+  & (0.044) & (0.079) & (0.039) & (0.054) & (0.077) \\ 
+ N & \multicolumn{1}{c}{1,119} & \multicolumn{1}{c}{1,119} & \multicolumn{1}{c}{1,086} & \multicolumn{1}{c}{1,119} & \multicolumn{1}{c}{1,119} \\ 
+\hline \\[-1.8ex] 
+\multicolumn{6}{l}{Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.} \\ 
+\multicolumn{6}{l}{Reference category: No Enemy. Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\multicolumn{6}{l}{In the top of each column is the Heterogeneous Variable. The outcome variable is the decision to proliferate.} \\ 
+\end{tabular} }
+\end{table} 
+
+To interpret this Table, note that each model has the same outcome variable: support to proliferate. In each column, we have one different heterogeneous effect variable. For example, in the first model, we run heterogeneous effects on female respondent. Women, conditional on no threat, are 8.9 percent less likely to support proliferation, and no interaction with the three treatment levels changes this disposition against nuclear weapons. All the other models are similarly interpreted.
+
+```{r}
+aux <- filter(wave1, !is.na(trstatus2))
+reg2 <- lm.cluster(outcbin ~ (powerful+protection+trustedbrgov)*conservation,
+           data = aux, cluster = aux$region, weights = aux$wts)
+p1 <- interplot(reg2$lm_res,var1 = 'powerful', 
+          var2 = 'conservation', ci = 0.9,
+          point = T, esize=1.2, facet_labs = 'Powerful Enemy', plot=F) %>%
+  round(digits = 3)
+names(p1) <- c('Conservation', 'Coef', 'Lower Bound CI', 'Upper Bound CI')
+p1 %>%
+  kable(caption = 'Heterogeneous Effects of Conservation on Threat Level', 
+        booktabs = T)
+```
+
+```{r}
+p2 <- interplot(reg2$lm_res,var1 = 'protection', 
+                var2 = 'conservation', ci = 0.9,
+                point = T, esize=1.2, facet_labs = 'U.S. Protection', plot=F) %>%
+  round(digits = 3)
+  names(p2) <- c('Conservation', 'Coef', 'Lower Bound CI', 'Upper Bound CI')
+p2 %>%
+  kable(caption = 'Heterogeneous Effects of Conservation on Protection', 
+        booktabs = T)
+```
+
+```{r}
+p3 <- interplot(reg2$lm_res,var1 = 'trustedbrgov', 
+                var2 = 'conservation', ci = 0.9,
+                point = T, plot=F) %>%
+  round(digits = 3)
+names(p3) <- c('Conservation', 'Coef', 'Lower Bound CI', 'Upper Bound CI')
+p3 %>%
+  kable(caption = 'Heterogeneous Effects of Conservation on Trust', 
+        booktabs = T)
+```
+
+We used 90\% confidence intervals. To have 95% confidence intervals, it suffices to change the 1.645 to 1.96 in the above code.
+
+## Robustness checks
+
+For the first wave, we run two robustness checks. First, we checked whether our choice for main treatment is driving the results. Second, we checked whether the pre-treatment demographic characteristics changes significantly our results. All the results remain similar to the ones presented in the main paper.
+
+### Variations in the treatment definitions
+
+We propose three variations in the treatment status, that are observationally equivalent in terms of having a *powerful enemy*, *protection*, and *trusted by the Brazilian government*.
+
+**Variation 1**
+
+The variation considers the qualifier *no protection* under powerful enemy.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatusR1, powerful, protection, trustedbrgov) %>%
+  na.omit() %>%
+  unique()
+row.names(aux) <- aux$trstatusR1
+aux <- aux[names(table(aux$trstatusR1)),]
+row.names(aux) <- NULL
+aux  %>%
+  kable(caption = 'Variation 1 Treatment Definition', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+**Variation 2**
+
+The variation considers the *weak enemy* as the baseline category.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatusR2, powerful, protection, trustedbrgov) %>%
+  na.omit() %>%
+  unique()
+row.names(aux) <- aux$trstatusR2
+aux <- aux[names(table(aux$trstatusR2)),]
+row.names(aux) <- NULL
+aux %>%
+  kable(caption = 'Variation 2 Treatment Definition', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+**Variation 3**
+
+The variation removes the untrusted protection, comparing only protection alone with trusted protection.
+
+```{r}
+aux <- wave1 %>%
+  dplyr::select(trstatusR3, powerful, protection, trustedbrgov) %>%
+  na.omit() %>%
+  unique()
+row.names(aux) <- aux$trstatusR3
+aux <- aux[names(table(aux$trstatusR3)),]
+row.names(aux) <- NULL
+aux %>%
+  kable(caption = 'Variation 3 Treatment Definition', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The regressions for the three waves follows below.
+
+```{r, echo = FALSE, results='asis'}
+mod <- list()
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR1, powerful, protection, trustedbrgov,
+         region, wts) %>%
+  na.omit()
+mod[[1]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov|0|0|region,
+  data = aux, weights = aux$wts)
+
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR2, powerful, 
+         protection, trustedbrgov, region, wts) %>%
+  na.omit()
+mod[[2]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov|0|0|region,
+  data = aux, weights = aux$wts)
+
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR3, powerful, protection, 
+         trustedbrgov, region, wts) %>%
+  na.omit()
+mod[[3]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov|0|0|region,
+  data = aux, weights = aux$wts)
+
+stargazer(mod[[1]],mod[[2]],mod[[3]], 
+          covariate.labels = c('Powerful Enemy',
+                               'Protection',
+                               'Trusted Protection'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Robustness to the Treatment Definition',
+          label = 'robtrdefw1',
+          align = T,
+          column.labels = c('Variation 1',
+                            'Variation 2',
+                            'Variation 3'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No Enemy. Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+Note that in all three models, the coefficients are significant whenever the main regression coefficients are also significant. The coefficients are also in the same range as the primary models regression's coefficients.
+
+### Robustness to addition of controls
+
+We add the following pre-treatment as controls:
+
+1. Age
+2. Female
+3. Income
+4. High School Complete or more
+5. Religion
+
+The results remain largely similar to the non-controlled results.
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatus2, powerful, protection, trustedbrgov, age,
+         female, income, hsmore, religion, region, wts) %>%
+  na.omit()
+mod[[1]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov+
+    age+female+income+hsmore+religion|0|0|region,
+  data = aux, weights = aux$wts)
+
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR1, powerful, protection, trustedbrgov, age,
+         female, income, hsmore, religion, region, wts) %>%
+  na.omit()
+mod[[2]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov+
+    age+female+income+hsmore+religion|0|0|region,
+  data = aux, weights = aux$wts)
+
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR2, powerful, protection, trustedbrgov, age,
+         female, income, hsmore, religion, region, wts) %>%
+  na.omit()
+mod[[3]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov+
+    age+female+income+hsmore+religion|0|0|region,
+  data = aux, weights = aux$wts)
+
+aux <- wave1 %>%
+  dplyr::select(outcbin, trstatusR3, powerful, protection, trustedbrgov, age,
+         female, income, hsmore, religion, region, wts) %>%
+  na.omit()
+mod[[4]] <- felm(
+  outcbin ~ powerful+protection+trustedbrgov+
+    age+female+income+hsmore+religion|0|0|region,
+  data = aux, weights = aux$wts)
+
+stargazer(mod[[1]],mod[[2]], mod[[3]], mod[[4]], 
+          covariate.labels = c('Powerful Enemy',
+                               'Protection',
+                               'Trusted Protection'),
+          keep = c('powerfulYes','protectionYes','trustedbrgovYes','Constant'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Robustness to the inclusion of pre-treatments',
+          label = 'pretrregs1',
+          align = T,
+          column.labels = c('Main Model',
+                            'Variation 1',
+                            'Variation 2',
+                            'Variation 3'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No Enemy. Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01',
+                    'The outcome variable is the decision to proliferate.'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F,
+          table.placement = 'H')
+```
+
+The reference category changed significantly, now reflecting the baseline in each control variable. The treatment variables coefficients remain similar to those in the main and robustness treatment models.
+
+# Analysis Wave Two \label{sec:w2}
+
+## Descriptive Statistics
+
+In the wave 2 dataset (`wave2` R object), we have the following variables:
+
+1. **`nquest`**: 9-digit DataFolha Respondent Code.
+2. **`trstatus`**: Treatment Status.
+3. **`female`**: Dummy for Female Respondent.
+4. **`age`**: Age.
+5. **`income`**: 8-brackets income levels.
+6. **`hsmore`**: Dummy for High School or more of education.
+7. **`region`**: Brazilian region.
+8. **`outcbin`**: Dummy for support for Nuclear Proliferation.
+9. **`outccont`**: 4-levels Likert Scale Support for Nuclear Proliferation.
+10. **`perceivedally`**: Countries that the respondent believe is a Brazilian ally.
+11. **`wts`**: Weights computed by the DataFolha Statistics Team.
+12. **`more5mw`**: More than five minimum wage salaries.
+
+The original Portuguese version of the questionnaire is in [here](XXXX) while the English translated version is in [here](XXXX). The descriptive statistics follow below.
+
+```{r, results = 'hide'}
+aux <- wave2 %>%
+  dplyr::select(trstatus,age,female,income,region,
+         hsmore,outcbin,outccont) %>%
+  mutate(female = factor(female, 
+                         labels = c('No', 'Yes')),
+         hsmore = factor(hsmore, 
+                         labels = c('No', 'Yes'))) %>%
+  rename(`Treatment Status` = trstatus,
+         `Age` = age,
+         `Female` = female,
+         `Income` = income,
+         `Region` = region,
+         `High School or more` = hsmore,
+         `Prop. Supporting Proliferation` = outcbin,
+         `Should Proliferate (Likert)` = outccont)
+```
+
+```{r, results ='hide'}
+export2latex(descrTable(~., digits = 2, show.p.overall = F, 
+           show.all = T, data = aux))
+```
+
+\begin{longtable}{lcc}\caption{Summary descriptives table}\\
+    \hline  
+     &     [ALL]     & \multirow{2}{*}{ N  }\\ 
+ &    N=1997     &      \\ 
+  
+    \hline
+    \hline     
+    \endfirsthead 
+    \multicolumn{3}{l}{\tablename\ \thetable{} \textit{-- continued from previous page}}\\ 
+    \hline
+     &     [ALL]     & \multirow{2}{*}{ N  }\\ 
+ &    N=1997     &      \\ 
+
+    \hline
+    \hline  
+    \endhead   
+    \hline
+    \multicolumn{3}{l}{\textit{continued on next page}} \\ 
+    \endfoot   
+    \multicolumn{3}{l}{}  \\ 
+    \endlastfoot 
+    Treatment Status: &               & 1997\\ 
+$\qquad$Powerful enemy and no protection & 281 (14.07\%)  &     \\ 
+$\qquad$Powerful enemy and Allied Protection & 289 (14.47\%)  &     \\ 
+$\qquad$Powerful enemy and US Protection & 288 (14.42\%)  &     \\ 
+$\qquad$Powerful enemy and Allied Protection trusted by Brazilian Army & 279 (13.97\%)  &     \\ 
+$\qquad$Powerful enemy and US Protection trusted by Brazilian Army & 288 (14.42\%)  &     \\ 
+$\qquad$Powerful enemy and Allied Protection untrusted by Brazilian Army & 288 (14.42\%)  &     \\ 
+$\qquad$Powerful enemy and US Protection untrusted by Brazilian Army & 284 (14.22\%)  &     \\ 
+Age & 42.60 (15.99) & 1997\\ 
+Female: &               & 1997\\ 
+$\qquad$No & 946 (47.37\%)  &     \\ 
+$\qquad$Yes & 1051 (52.63\%) &     \\ 
+Income: &               & 1899\\ 
+$\qquad$BRL 0.00 to BRL 998.00 & 442 (23.28\%)  &     \\ 
+$\qquad$BRL 999.00 to BRL 1,996.00 & 489 (25.75\%)  &     \\ 
+$\qquad$BRL 1,997.00 to BRL 2,994.00 & 388 (20.43\%)  &     \\ 
+$\qquad$BRL 2,995.00 to BRL 4,990.00 & 291 (15.32\%)  &     \\ 
+$\qquad$BRL 4,991.00 or more & 289 (15.22\%)  &     \\ 
+Region: &               & 1997\\ 
+$\qquad$Southeast & 855 (42.81\%)  &     \\ 
+$\qquad$South & 292 (14.62\%)  &     \\ 
+$\qquad$Northeast & 526 (26.34\%)  &     \\ 
+$\qquad$Center-West &  163 (8.16\%)  &     \\ 
+$\qquad$North &  161 (8.06\%)  &     \\ 
+High School or more: &               & 1997\\ 
+$\qquad$No & 854 (42.76\%)  &     \\ 
+$\qquad$Yes & 1143 (57.24\%) &     \\ 
+Prop. Supporting Proliferation &  0.17 (0.38)  & 1967\\ 
+Should Proliferate (Likert): &               & 1967\\ 
+$\qquad$Strongly and Somewhat disagree & 1623 (82.51\%) &     \\ 
+$\qquad$Somewhat agree &  130 (6.61\%)  &     \\ 
+$\qquad$Strongly agree & 214 (10.88\%)  &      \\ 
+ 
+\hline
+\end{longtable}
+
+And the perceived allies statistics in the paper can be found in the table below.
+
+```{r}
+round(sort(prop.table(table(wave2$perceivedally))*100), 2) %>%
+  kable(caption = 'Perceived Brazilian Ally', booktabs = T)  %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+## Pre-treatment Balance
+
+We perform two types of balancing tests. For the continuous variables, we perform an F-test. For the categorical variables, we run a Chi-Square test. The results are in the Table below:
+
+```{r, echo = FALSE}
+# Age
+mod <- aov(age~trstatus, data=wave2, weights = wave2$wts)
+aux <- data.frame(Variable = 'Age',
+                  Stat = 'F',
+                  Value = round(summary(mod)[[1]][1,4], 3),
+                  PValue = round(summary(mod)[[1]][1,5], 3))
+# Gender
+mod <- wtd.chi.sq(wave2$female, 
+                  wave2$trstatus, 
+                  weight = wave2$wts)
+aux <- rbind(aux, data.frame(Variable = 'Gender',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+# Education
+mod <- wtd.chi.sq(wave2$hsmore, 
+                  wave2$trstatus, 
+                  weight = wave2$wts)
+aux <- rbind(aux, data.frame(Variable = 'Education',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+# Region
+mod <- wtd.chi.sq(wave2$region, 
+                  wave2$trstatus, 
+                  weight = wave2$wts)
+aux <- rbind(aux, data.frame(Variable = 'Region',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+# Income
+mod <- wtd.chi.sq(wave2$income, 
+                  wave2$trstatus, 
+                  weight = wave2$wts)
+aux <- rbind(aux, data.frame(Variable = 'Income',
+                  Stat = 'Chi-Sq',
+                  Value = round(as.numeric(mod[1]), 3),
+                  PValue = round(as.numeric(mod[3]), 3)))
+
+names(aux) <- c('Variable', 'Statistic', 'Value', 'P-Value')
+```
+
+```{r}
+aux %>%
+  kable(caption = 'Balance Tests -- Wave 2', booktabs = T)  %>%
+  kable_styling(latex_options = "HOLD_position")
+```
+
+As we can see, the results are insignificant (p-value above $0.10$). Therefore, we have balance across all treatment levels.
+
+## Main Model -- Wave 2
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and no protection',
+                         'Powerful enemy and Allied Protection',
+                         'Powerful enemy and US Protection'))
+mod[[1]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and Allied Protection trusted by Brazilian Army',
+                         'Powerful enemy and US Protection trusted by Brazilian Army',
+                         'Powerful enemy and Allied Protection untrusted by Brazilian Army',
+                         'Powerful enemy and US Protection untrusted by Brazilian Army'))
+aux$trstatus <- factor(as.character(aux$trstatus), levels = c(
+  "Powerful enemy and Allied Protection untrusted by Brazilian Army",
+  "Powerful enemy and Allied Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection untrusted by Brazilian Army"))
+mod[[2]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+stargazer(mod[[1]],mod[[2]],
+          covariate.labels = 
+            c('Allied Protection', 
+              'U.S. Protection',
+              'Allied Protection trusted by Brazilian Army',
+              'Protection trusted by Brazilian Army',
+              'US Protection untrusted by Brazilian Army',
+              'Constant'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Main Regressions -- Wave 2',
+          label = 'mainregw2',
+          align = T,
+          column.labels = c("Protection",
+                            "Trust from Armed Forces"),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No protection (model 1) and Allied Protection untrusted by Br. Army (model 2)',
+                    'Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01',
+                    'In all models, we are assuming the presence of a powerful enemy.'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+## Robustness checks
+
+### Heterogeneous Effects
+
+We run the heterogeneous effects for `gender`, `age`, `schooling`, and `income`. We find that `gender` makes the protection more effective (as in the first wave), and high income makes the protection by a generic ally less effective.
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and no protection',
+                         'Powerful enemy and Allied Protection',
+                         'Powerful enemy and US Protection'))
+mod[[1]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[2]] <- felm(
+  outcbin ~ trstatus*female|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[3]] <- felm(
+  outcbin ~ trstatus*age|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[4]] <- felm(
+  outcbin ~ trstatus*hsmore|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[5]] <- felm(
+  outcbin ~ trstatus*more5mw|0|0|region,
+  data = aux, weights = aux$wts)
+
+for (i in 2:5) {
+  row.names(mod[[i]]$coefficients)[4] = 'HEVariable'
+  row.names(mod[[i]]$coefficients)[5] = 'Allied Protection*HEVariable'
+  row.names(mod[[i]]$coefficients)[6] = 'US Protection*HEVariable'
+  row.names(mod[[i]]$beta)[4] = 'HEVariable'
+  row.names(mod[[i]]$beta)[5] = 'Allied Protection*HEVariable'
+  row.names(mod[[i]]$beta)[6] = 'US Protection*HEVariable'
+}
+
+stargazer(mod[[1]],mod[[2]],mod[[3]],mod[[4]],mod[[5]],
+          covariate.labels = 
+            c('Allied Protection', 
+              'U.S. Protection',
+              'HEVariable',
+              'Allied Protection*HEVariable',
+              'US Protection*HEVariable',
+              'Constant'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Heterogeneous Effects Wave 1 - Model 1',
+          label = 'heteffw1m1',
+          align = T,
+          column.labels = c("No HE Effect",
+                            "Female",
+                            'Age',
+                            'Education',
+                            'Income'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No protection.',
+                    'Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and Allied Protection trusted by Brazilian Army',
+                         'Powerful enemy and US Protection trusted by Brazilian Army',
+                         'Powerful enemy and Allied Protection untrusted by Brazilian Army',
+                         'Powerful enemy and US Protection untrusted by Brazilian Army'))
+aux$trstatus <- factor(as.character(aux$trstatus), levels = c(
+  "Powerful enemy and Allied Protection untrusted by Brazilian Army",
+  "Powerful enemy and Allied Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection untrusted by Brazilian Army"))
+mod[[1]] <- felm(
+  outcbin ~ trstatus|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[2]] <- felm(
+  outcbin ~ trstatus*female|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[3]] <- felm(
+  outcbin ~ trstatus*age|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[4]] <- felm(
+  outcbin ~ trstatus*hsmore|0|0|region,
+  data = aux, weights = aux$wts)
+mod[[5]] <- felm(
+  outcbin ~ trstatus*more5mw|0|0|region,
+  data = aux, weights = aux$wts)
+
+for (i in 2:5) {
+  row.names(mod[[i]]$coefficients)[5] = 'HEVariable'
+  row.names(mod[[i]]$coefficients)[6] = 'Allied Protection trusted by Brazilian Army*HEVariable'
+  row.names(mod[[i]]$coefficients)[7] = 'US Protection trusted by Brazilian Army*HEVariable'
+  row.names(mod[[i]]$coefficients)[8] = 'US Protection untrusted by Brazilian Army*HEVariable'
+  row.names(mod[[i]]$beta)[5] = 'HEVariable'
+  row.names(mod[[i]]$beta)[6] = 'Allied Protection trusted by Brazilian Army*HEVariable'
+  row.names(mod[[i]]$beta)[7] = 'US Protection trusted by Brazilian Army*HEVariable'
+  row.names(mod[[i]]$beta)[8] = 'US Protection untrusted by Brazilian Army*HEVariable'
+}
+
+stargazer(mod[[1]],mod[[2]],mod[[3]],mod[[4]],mod[[5]],
+          covariate.labels = 
+            c('Allied Prot. trusted by Br. Army', 
+              'U.S. Prot. trusted by Br. Army',
+              'U.S. Prot. untrusted by Br. Army',
+              'HEVariable',
+              'Allied Prot. trusted by Br. Army*HEVariable',
+              'U.S. Prot. trusted by Br. Army*HEVariable',
+              'U.S. Prot. untrusted by Br. Army*HEVariable',
+              'Constant'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Heterogeneous Effects Wave 1 - Model 2',
+          label = 'heteffw1m2',
+          align = T,
+          column.labels = c("No HE",
+                            "Female",
+                            'Age',
+                            'Education',
+                            'Income'),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: Allied Protection untrusted by Brazilian Army.',
+                    'Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+
+### Robustness to the addition of controls
+
+We run the main models adding controls for `age`, `income`, `schooling`, and `gender`. The results remain the same, with the only difference is a slight change in the constant. This reassures us that the randomization was properly conducted.
+
+```{r, echo = FALSE, results = 'asis'}
+mod <- list()
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and no protection',
+                         'Powerful enemy and Allied Protection',
+                         'Powerful enemy and US Protection'))
+mod[[1]] <- felm(
+  outcbin ~ trstatus+age+female+income+hsmore|0|0|region,
+  data = aux, weights = aux$wts)
+aux <- wave2 %>%
+  filter(trstatus %in% c('Powerful enemy and Allied Protection trusted by Brazilian Army',
+                         'Powerful enemy and US Protection trusted by Brazilian Army',
+                         'Powerful enemy and Allied Protection untrusted by Brazilian Army',
+                         'Powerful enemy and US Protection untrusted by Brazilian Army'))
+aux$trstatus <- factor(as.character(aux$trstatus), levels = c(
+  "Powerful enemy and Allied Protection untrusted by Brazilian Army",
+  "Powerful enemy and Allied Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection trusted by Brazilian Army",
+  "Powerful enemy and US Protection untrusted by Brazilian Army"))
+mod[[2]] <- felm(
+  outcbin ~ trstatus+age+female+income+hsmore|0|0|region,
+  data = aux, weights = aux$wts)
+stargazer(mod[[1]],mod[[2]],
+          covariate.labels = 
+            c('Allied Protection', 
+              'U.S. Protection',
+              'Allied Protection trusted by Brazilian Army',
+              'Protection trusted by Brazilian Army',
+              'US Protection untrusted by Brazilian Army',
+              'Constant'),
+          keep = c('trstatusPowerful enemy and Allied Protection',
+                   'trstatusPowerful enemy and US Protection',
+                   'trstatusPowerful enemy and Allied Protection trusted by Brazilian Army',
+                   'trstatusPowerful enemy and US Protection trusted by Brazilian Army ',
+                   'trstatusPowerful enemy and US Protection untrusted by Brazilian Army',
+                   'Constant'),
+          type = 'latex',
+          style = 'apsr',
+          title = 'Robustness to Addition of Controls -- Wave 2',
+          label = 'robcontrw2',
+          align = T,
+          column.labels = c("Protection",
+                            "Trust from Armed Forces"),
+          notes = c('Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.',
+                    'Reference category: No protection (model 1) and Allied Protection untrusted by Brazilian Army (model 2)',
+                    'Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01',
+                    'In all models, we are assuming the presence of a powerful enemy.'),
+          notes.append = F,
+          column.sep.width = '-2pt',
+          digits=3,
+          keep.stat="n", 
+          header = F,
+          dep.var.labels.include=F)
+```
+
+# Figures in the Main Paper
+
+## Figure 1 - Threat Effect
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='.5\\linewidth', fig.width=5, fig.height=5, fig.show='hold', fig.align='center', fig.cap='\\label{threateff}Effect of Threat on the Support for Proliferation'}
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c('No enemy','Powerful enemy', 'Weak enemy')) %>%
+  dplyr::select(trstatus, outcbin) %>%
+  na.omit() %>%
+  group_by(trstatus) %>%
+  summarise(meantr = mean(outcbin),
+            setr = sd(outcbin)/sqrt(n())) %>%
+  mutate(upr = meantr + 1.645*setr,
+         lwr = meantr - 1.645*setr)
+aux$trstatus <- as.character(aux$trstatus)
+aux$trstatus <- factor(aux$trstatus, levels = c("Powerful enemy", "Weak enemy", "No enemy"))
+ggplot(data = aux) +
+  geom_col(aes(x = trstatus, y = meantr)) +
+  #geom_point(aes(x = trstatus, y = meantr)) +
+  geom_errorbar(aes(x = trstatus, y = meantr,
+                                 ymin = lwr, 
+                                 ymax = upr), width = 0.2) +
+  geom_text(aes(label = paste(round(meantr, digits = 3)*100, '%', sep = ''), 
+                x = trstatus, y = meantr), 
+            position = position_dodge(width = 0.8), 
+            vjust = -0.3, hjust = -0.2) +
+  xlab('Treatment Status') + 
+  ylab('Support for Proliferation') +
+  theme_bw()
+```
+
+## Figure 2 - Protection Effect
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=9, fig.height=5, fig.show='hold', fig.align='center', fig.cap='\\label{proteff}Effect of Protection on Support for Proliferation'}
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c("Powerful enemy", 
+             "Powerful enemy and protection")) %>%
+  dplyr::select(trstatus, outcbin) %>%
+  na.omit() %>%
+  group_by(trstatus) %>%
+  summarise(meantr = mean(outcbin),
+            setr = sd(outcbin)/sqrt(n())) %>%
+  mutate(upr = meantr + 1.645*setr,
+         lwr = meantr - 1.645*setr,
+         Wave = 'Wave 1')
+aux$trstatus <- as.character(aux$trstatus)
+aux$trstatus <- factor(aux$trstatus, levels = c("Powerful enemy", "Powerful enemy and protection"))
+levels(aux$trstatus) <- c("Powerful Enemy", "Powerful Enemy and\nU.S. Protection")
+aux2 <- wave2 %>%
+  filter(trstatus %in% 
+           c("Powerful enemy and no protection", 
+             "Powerful enemy and Allied Protection",
+             "Powerful enemy and US Protection")) %>%
+  dplyr::select(trstatus, outcbin) %>%
+  na.omit() %>%
+  group_by(trstatus) %>%
+  summarise(meantr = mean(outcbin),
+            setr = sd(outcbin)/sqrt(n())) %>%
+  mutate(upr = meantr + 1.645*setr,
+         lwr = meantr - 1.645*setr,
+         Wave = 'Wave 2')
+aux2$trstatus <- as.character(aux2$trstatus)
+aux2$trstatus <- factor(aux2$trstatus, 
+                        levels = c(
+                          "Powerful enemy and no protection",
+                          "Powerful enemy and Allied Protection",
+                          "Powerful enemy and US Protection"))
+levels(aux2$trstatus) <- c("Powerful Enemy and\nNo Protection",
+                           "Powerful Enemy and\nAllied Protection", 
+                           "Powerful Enemy and\nU.S. Protection")
+aux <- rbind(aux,aux2)
+aux$trstatus <- as.character(aux$trstatus)
+aux$trstatus <- factor(aux$trstatus, levels = c("Powerful Enemy", "Powerful Enemy and\nNo Protection", 
+                                                "Powerful Enemy and\nAllied Protection", 
+                                                "Powerful Enemy and\nU.S. Protection"))
+
+ggplot(data = aux) +
+  geom_col(aes(x = trstatus, y = meantr)) +
+  #geom_point(aes(x = trstatus, y = meantr)) +
+  geom_errorbar(aes(x = trstatus, y = meantr,
+                    ymin = lwr, 
+                    ymax = upr), width = 0.2) +
+  geom_text(aes(label = paste(round(meantr, digits = 3)*100, '%', sep = ''), 
+                x = trstatus, y = meantr), 
+            position = position_dodge(width = 0.8), 
+            vjust = -0.3, hjust = -0.2) +
+  xlab('Treatment Status') + 
+  ylab('Support for Proliferation') +
+  theme_bw() +
+  facet_wrap(~Wave, scales = 'free_x') +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## Figure 3 - Brazilian Institutions Trust Effect
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=9, fig.height=5, fig.show='hold', fig.align='center', fig.cap='\\label{trproleff}Effect of Government Trust on the Support for Proliferation'}
+aux <- wave1 %>%
+  filter(trstatus %in% 
+           c('Powerful enemy and trusted protection',
+             'Powerful enemy and untrusted protection')) %>%
+  dplyr::select(trstatus, outcbin) %>%
+  na.omit() %>%
+  group_by(trstatus) %>%
+  summarise(meantr = mean(outcbin),
+            setr = sd(outcbin)/sqrt(n())) %>%
+  mutate(upr = meantr + 1.645*setr,
+         lwr = meantr - 1.645*setr,
+         Wave = 'Wave 1')
+
+aux2 <- wave2 %>%
+  filter(trstatus %in% 
+           c("Powerful enemy and Allied Protection trusted by Brazilian Army", 
+             "Powerful enemy and US Protection trusted by Brazilian Army",
+             "Powerful enemy and Allied Protection untrusted by Brazilian Army",
+             'Powerful enemy and US Protection untrusted by Brazilian Army')) %>%
+  dplyr::select(trstatus, outcbin) %>%
+  na.omit() %>%
+  group_by(trstatus) %>%
+  summarise(meantr = mean(outcbin),
+            setr = sd(outcbin)/sqrt(n())) %>%
+  mutate(upr = meantr + 1.645*setr,
+         lwr = meantr - 1.645*setr,
+         Wave = 'Wave 2')
+aux <- rbind(aux,aux2)
+aux$trstatus <- as.character(aux$trstatus)
+aux$trstatus <- factor(aux$trstatus, 
+                       levels = c(
+                         "Powerful enemy and untrusted protection", 
+                         "Powerful enemy and trusted protection", 
+                         "Powerful enemy and Allied Protection untrusted by Brazilian Army", 
+                         "Powerful enemy and Allied Protection trusted by Brazilian Army", 
+                         "Powerful enemy and US Protection untrusted by Brazilian Army",
+                         "Powerful enemy and US Protection trusted by Brazilian Army"))
+levels(aux$trstatus) <- 
+  c("Powerful Enemy and U.S. Protection\nUntrusted by Brazilian Govt.", 
+    "Powerful Enemy and U.S. Protection\nTrusted by Brazilian Govt.",
+    "Powerful Enemy and Allied Protection\nUntrusted by Brazilian Army", 
+    "Powerful Enemy and Allied Protection\nTrusted by Brazilian Army", 
+    "Powerful Enemy and U.S. Protection\nUntrusted by Brazilian Army", 
+    "Powerful Enemy and U.S. Protection\nTrusted by Brazilian Army"
+)
+
+ggplot(data = aux) +
+  geom_col(aes(x = trstatus, y = meantr)) +
+  #geom_point(aes(x = trstatus, y = meantr)) +
+  geom_errorbar(aes(x = trstatus, y = meantr,
+                    ymin = lwr, 
+                    ymax = upr), width = 0.2) +
+  geom_text(aes(label = paste(round(meantr, digits = 3)*100, '%', sep = ''), 
+                x = trstatus, y = meantr), 
+            position = position_dodge(width = 0.8), 
+            vjust = -0.3, hjust = -0.2) +
+  xlab('Treatment Status') + 
+  ylab('Support for Proliferation') +
+  theme_bw() +
+  facet_wrap(~Wave, scales = 'free_x') +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+```
+
+## Figure 4 - Heterogeneous Effect of Conservation in the Decision to Proliferate
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=9, fig.height=5, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Hegerogeneous effect of Conservation on the Treatments'}
+aux <- filter(wave1, !is.na(trstatus2))
+reg2 <- lm.cluster(outcbin ~ (powerful+protection+trustedbrgov)*conservation,
+           data = aux, cluster = aux$region, weights = aux$wts)
+p1 <- interplot(reg2$lm_res,var1 = 'powerful', 
+          var2 = 'conservation', ci = 0.9,
+          point = T, esize=1.2, facet_labs = 'Powerful Enemy', plot=F) %>%
+  mutate(conservation = round(conservation, 2)) %>%
+  ggplot(aes(x = as.factor(conservation), y = coef)) +
+  geom_errorbar(aes(x = as.factor(conservation), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2) +
+  geom_point() + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Powerful Enemy') +
+  xlab('') +
+  ylab('') + ylim(-1,1)
+p2 <- interplot(reg2$lm_res,var1 = 'protection', 
+                var2 = 'conservation', ci = 0.9,
+                point = T, esize=1.2, facet_labs = 'U.S. Protection', plot=F) %>%
+  mutate(conservation = round(conservation, 2)) %>%
+  ggplot(aes(x = as.factor(conservation), y = coef)) +
+  geom_errorbar(aes(x = as.factor(conservation), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2) +
+  geom_point() + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'U.S. Protection') +
+  xlab('Conservation Scale') +
+  ylab('') + ylim(-1,1)
+p3 <- interplot(reg2$lm_res,var1 = 'trustedbrgov', 
+                var2 = 'conservation', ci = 0.9,
+                point = T, esize=1.2, facet_labs = 'U.S. Protection', plot=F) %>%
+  mutate(conservation = round(conservation, 2)) %>%
+  ggplot(aes(x = as.factor(conservation), y = coef)) +
+  geom_errorbar(aes(x = as.factor(conservation), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2) +
+  geom_point() + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Trusted Protection') +
+  xlab('') +
+  ylab('') + ylim(-1,1)
+
+grid.arrange(p1, p2, p3, ncol=3)
+```
+
+
+# APSA Experimental Section Report
+
+## Hypothesis
+
+- What are the questions the experiment was designed to address?
+  + In these two-wave survey, we studied the microfoundation components that determine the public opinion decisions toward nuclear weapons proliferation.
+
+-	What are the specific hypotheses to be tested?
+  + We are testing whether respondents in a non-nuclear nation, Brazil, reason about nuclear proliferation. We distinguish two main determinants of public opinion behavior: first, the rational choice behavior, rooted in threat, superpower guarantees (backup by a nuclear ally), and the general trust of the Brazilian government regarding the guarantee; second, we contrast the rational choice motivation with conservation beliefs. These conservation beliefs mediate the way that the public reason about the nature and extent of the threat.
+
+##	Subjects and Context
+
+-	Eligibility and Exclusion criteria
+  + Subjects are selected by a representative sample of the Brazilian population collected by the [DataFolha pooling company](http://datafolha.folha.uol.com.br/). We restrict our sample to people over 18 years old.
+
+- Why was this subject pool selected?
+  + The selection was based on a representative sample of the adult Brazilian population.
+
+- Who was eligible to participate in the study?
+  + Brazilian citizens, over 18 years old.
+
+- What would result in the exclusion of a participant?
+  + Being a foreigner, or younger than 18 years old.
+
+- Were any aspects of recruitment changed after the recruitment began?
+  + No.
+
+- Procedures used to recruit and select participants
+  + The survey company samples the Brazilian municipalities to match the Brazilian Institute of Geography and Statistics. They put enumerators in places with large influx of people. Enumerators are instructed to gather a diverse pool of responses. Around 30 percent of responses are double-checked to ensure consistency.
+
+- Recruitment dates defining the periods of recruitment and when the experiments were conducted.
+  + The first wave of the experiment was fielded between 12/09 and 12/16, 2019. The second wave of the experiment was fielded between 02/03 and 02/07, 2020. As it is a face-to-face survey experiment, the recruitment is performed at the street level, where the company assigns the enumerator.
+
+- Dates of any repeated
+  + Not apply.
+
+- Settings and locations where the data were collected
+  + The data was collected using face-to-face data collection, where enumerators are placed in strategic places in the municipalities selected for the survey application. DataFolha performs the municipality selection according to the Brazilian Demographic Census and the population projections issued by the Brazilian Institute of Geography and Statistics.
+
+- Where? Field? Lab? Etc.
+  + Face-to-face survey.
+
+- Relevant specifics about the population? College students?
+  + The target population is comprised of Brazilian with over 18 years old.
+
+- Survey: Response rate and how it was calculated
+  + The first survey wave had 2001 respondents, and the second wave had a response rate of 1997.
+
+## Allocation Methods
+
+- Details of the procedure used to generate the assignment sequence (randomization procedure)
+  + We use cluster random assignment, randomizing the vignette of the experiment within each survey quota.
+  + The control vignette consisted on no enemy information. In the first wave, `r as.numeric(table(wave1$trstatus)[1])` participants received the control vignette. In the second wave, `r as.numeric(table(wave2$trstatus)[1])` participants received the control vignette. 
+  + There were six treatment arms (excluding control) in the first wave. The answers ranged from `r as.numeric(min(table(wave1$trstatus)))` to `r as.numeric(max(table(wave1$trstatus)))` participants in each treatment status. In the second wave, there were six treatment arms (excluding control). The answers ranged from `r as.numeric(min(table(wave2$trstatus)))` to `r as.numeric(max(table(wave2$trstatus)))` participants in each treatment status.
+
+- Random assignment
+  + Simple random assignment within the Region quota.
+
+- Units of randomization
+  + The randomization was performed within Region quota, at the respondent's level.
+
+- Cluster random assignment
+  + Region. We use cluster-robust standard error, with Region as the cluster.
+
+- Evidence for random assignment
+  + We checked pre-treatment imbalance between control and the treatments in the following variables: Age, Gender, Education, Region, Income, and religion (first wave).
+
+- Pre-treatment variables
+  + We have six pre-treatment variables:
+    + Age
+    + Gender
+    + Education
+    + Region
+    + Income
+    + Religion (only first wave)
+
+- Characteristics of the population
+  + The population sampled was the entire Brazilian population.
+
+- Block randomization
+  + We did not use block randomization.
+
+- Blinding: Were participants unaware of the treatment assignment?
+  + Yes. The randomization had an equal chance to draw any of the vignettes for a given respondent. Respondents could not foresee which vignette was drawn, neither that there was more than one vignette as a possible question.
+
+- Were those administering the intervention unaware of the random assignment?
+  + No. The enumerators were trained to read each of the vignette questions that showed up on their tablets.
+
+- Checked whether blind was successful?
+  + Not apply.
+
+## Treatments
+
+- Descriptions of the intervention:
+  + The intervention will consist of four steps.
+    + Step 1: Collecting information on attitudes and beliefs about the beliefs and values of the participant.
+    + Step 2: Collecting data on beliefs regarding nuclear proliferation and other pre-treatment variables.
+    + Step 3: Applying the experiment.
+    + Step 4: Collecting demographic characteristics.
+
+- Describe the treatment and control groups
+  + In the first wave, we had:
+    + Control: Absence of an enemy threat.
+    + Treatment 1: Presence of a weak threat.
+    + Treatment 2: Presence of a powerful country threatening Brazil.
+    + Treatment 3: Presence of a powerful country threatening Brazil, with no country protecting Brazil against the threat.
+    + Treatment 4: Presence of a powerful country threatening Brazil, but with a superpower guaranteeing Brazil's safety.
+    + Treatment 5: Presence of a powerful country threatening Brazil, but with a superpower guaranteeing Brazil's safety. The protection is _not_ trusted by the Brazilian government.
+    + Treatment 6: Presence of a powerful country threatening Brazil, but with a superpower guaranteeing Brazil's safety. The Brazilian government trusts the protection.
+  + In the second wave, we had:
+    + Control: Absence of Protection.
+    + Treatment 1: Protection from the U.S.
+    + Treatment 2: Protection from the U.S. that is trusted by the Brazilian Army.
+    + Treatment 3: Protection from the U.S. that is untrusted by the Brazilian Army.
+    + Treatment 4: Protection by an unnamed Ally.
+    + Treatment 5: Protection by an unnamed Ally that is trusted by the Brazilian Army.
+    + Treatment 6: Protection by an unnamed Ally that is untrusted by the Brazilian Army.
+
+- Experimental instructions
+  + To introduce the experimental question, the enumerator reads the following instructions: _Everyone talks about Brazil's external security in relation to other countries in the world. We will create different imaginary scenarios and ask what you think of each one._. Then the enumerator asks the questions.
+
+- How and when manipulations were administered
+  + The manipulation will be applied after the measurement of step one and step two covariates (see above) but before the measurement of the demographic variables.
+
+- Method of delivery
+  + The delivery was made by the enumerator reading the randomly selected vignette to the respondent.
+
+- Software used to administer the treatment
+  + DataFolha uses the SurveyToGo software on their tablets. Respondents will also be handed cards with the description of the answer ranges.
+
+## Results
+
+### Outcome measures and covariates
+
+- Outcome measures
+  + The outcome measured in both waves is the level of support for nuclear proliferation in Brazil.
+
+- Covariates
+  + **Heterogeneous Effects**: We use the variable `conservation values` for heterogeneous effects.
+  + **Pre-treatment Covariates**: We use the variables `age`, `income`, `schooling`, `education` and `religion` (only wave 1) as pre-treatment covariates. Religion is absent from wave two as it was a variable that is sold separately from the other demographic characteristics.
+
+- Survey Questionnaires
+  + First Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
+  + Second Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
+
+- Which outcomes and subgroup analysis were specified prior to the experiment?
+  + In the paper, we used a conservation scale as heterogeneous effects. The heterogeneous effects were pre-specified in the Pre-Analysis Plan before the analysis. The conservation scale consists of the following questions:
+    + _Here I will read a few sentences, and I would like you to tell me if you think this person described agrees with the way you see the world, totally or in part._
+    + **Security block:**
+    + _It is important to him to live in a safe environment. He avoids anything that might endanger his safety._
+    + _Having a stable society is important to him. He is concerned that the social order be protected._
+    + **Conformity block:**
+    + _He believes that people should do what they are told. He thinks that people should always follow rules at all times, even when no one is watching._
+    + _It is important to him to be obedient to his own parents and elders._
+    + **Tradition block:**
+    + _It is important to him to be humble and modest. He tries not to draw attention to himself._
+    + _Tradition is important to him. He tries to follow the customs handed down by his religion or his family._
+    + Then, the conservation scale is a combination of all these questions.
+
+- Exploratory analysis? What find?
+  + We conducted a focus group with FGV-IR students to ensure that the survey content was intelligible. After the focus group, we rephrased a few students' perceived questions as hard, accepting suggestions on phrasing and content.
+  + We have not processed the students' responses, as the focus group was more conversational, not for quantitative measurement.
+
+### CONSORT
+
+1. Number of subjects initially accessed for eligibility:
+  + In both waves, the survey company promised a sample of 2000 respondents. They give a sample of 2001 and 1997 in waves 1 and 2, respectively.
+
+2. Exclusions prior to random assignment
+  + There were no exclusions.
+
+3. Subjects initially assigned to each experimental group
+  + In the first wave:
+    + Control (No Enemy): 288 respondents.
+    + Treatment 1 (Weak Enemy): 284 respondents
+    + Treatment 2 (Powerful Enemy): 285 respondents
+    + Treatment 3 (Powerful Enemy and No Protection): 287 respondents
+    + Treatment 4 (Powerful Enemy and Protection): 283 respondents
+    + Treatment 5 (Powerful Enemy and Untrusted Protection): 290 respondents
+    + Treatment 6 (Powerful Enemy and Trusted Protection): 284 respondents
+  + In the second wave:
+    + Control (No Backup): 281 respondents.
+    + Treatment 1 (United States backup): 288 respondents.
+    + Treatment 2 (United States backup, trusted by Brazilian Army): 288 respondents.
+    + Treatment 3 (United States backup, not trusted by Brazilian Army): 284 respondents.
+    + Treatment 4 (Allied Country backup): 289 respondents.
+    + Treatment 5 (Allied Country backup, trusted by Brazilian Army): 279 respondents.
+    + Treatment 6 (Allied Country backup, not trusted by Brazilian Army): 288 respondents.
+
+4. Proportion received x not received intervention:
+  + In the first wave:
+    + Control (No Enemy): 14.39%.
+    + Treatment 1 (Weak Enemy): 14.19%
+    + Treatment 2 (Powerful Enemy): 14.24%
+    + Treatment 3 (Powerful Enemy and No Protection): 14.34%
+    + Treatment 4 (Powerful Enemy and Protection): 14.14%
+    + Treatment 5 (Powerful Enemy and Untrusted Protection): 14.49%
+    + Treatment 6 (Powerful Enemy and Trusted Protection): 14.19%
+  + In the second wave:
+    + Control (No Backup): 14.07%
+    + Treatment 1 (United States backup): 14.42%
+    + Treatment 2 (United States backup, trusted by Brazilian Army): 14.42%
+    + Treatment 3 (United States backup, not trusted by Brazilian Army): 14.22%
+    + Treatment 4 (Allied Country backup): 14.47%
+    + Treatment 5 (Allied Country backup, trusted by Brazilian Army): 13.97%
+    + Treatment 6 (Allied Country backup, not trusted by Brazilian Army): 14.42%
+
+5. Why did not receive intervention?
+  + Only by random assignment to the control group.
+
+6. Number subjects each group dropped experiment
+  + No respondent was dropped.
+
+7. Number included and any reason for exclusion
+  + Not apply.
+
+### Statistical analysis
+
+- Describe statistical analysis
+  + Linear regression analysis (OLS) with cluster-robust standard errors. We used the function `felm` from the package `lfe` in R. The package provides a straightforward way to estimate cluster-robust standard errors.
+
+- Means and standard deviations
+  + For the first wave:
+
+```{r}
+wave1 %>% 
+  group_by(trstatus) %>%
+  summarise(`Mean Support for Proliferation` = round(mean(outcbin, na.rm=T), 3),
+            `SD Support for Proliferation` = round(sd(outcbin, na.rm=T), 3),
+            `SE Support for Proliferation` = round(sd(outcbin, na.rm=T)/sqrt(n()), 3)) %>%
+  data.frame() %>%
+  kable(caption = 'Wave 1 -- Means and Std. Deviations', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+  + For the second wave:
+
+```{r}
+wave2 %>% 
+  group_by(trstatus) %>%
+  summarise(`Mean Support for Proliferation` = round(mean(outcbin, na.rm=T), 3),
+            `SD Support for Proliferation` = round(sd(outcbin, na.rm=T), 3),
+            `SE Support for Proliferation` = round(sd(outcbin, na.rm=T)/sqrt(n()), 3)) %>%
+  data.frame() %>%
+  kable(caption = 'Wave 2 -- Means and Std. Deviations', booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+- ITT
+  + Not apply
+
+- If use block randomization, ITT by block or overall means using IPW
+  + Not apply.
+
+- Standard errors:
+  + Cluster-robust standard errors, clustering at the Region level.
+
+- Attrition:
+  + Not apply.
+
+- Analyze pre-treatment variables to check reasons
+  + See the pre-treatment balance section.
+
+- Missing data
+  + There no missing data in the treatment assignments. Most of the missing is generated by the `Don't know` answer in the primary outcomes. This was a voluntary answer that affected 52 out of 2001 responses in the first wave, and 30 out of 1997 responses in the second wave.
+
+- Frequency and percentage missing by group
+  + See the descriptive statistics section for each of the waves.
+
+- Method for addressing missing data
+  + Not apply.
+
+- Summary missing data by subgroup
+  + For the first wave:
+  
+```{r}
+tab <- table(wave1$trstatus, is.na(wave1$outcbin))
+colnames(tab) <- c('Valid', 'Missing')
+tab
+```
+
+  + For the second wave:
+  
+```{r}
+tab <- table(wave2$trstatus, is.na(wave2$outcbin))
+colnames(tab) <- c('Valid','Missing')
+tab
+```
+
+- Survey experiments:
+  + A histogram of the weights for the first wave follows below.
+  
+```{r, fig.pos='h'}
+hist(wave1$wts, main = 'Weights Wave 1')
+```
+  
+  + A histogram of the weights for the second wave follows below.
+
+```{r, fig.pos='h'}
+hist(wave2$wts, main = 'Weights Wave 2')
+```
+
+- Reweighing procedures
+  - We only use the weights assigned by the DataFolha company. The weights assigned by DataFolha have the purpose of guarantee the representativeness of the Brazilian population. Heloisa Furia supervised the weight computations.
+
+## Other information
+
+- IRB
+  + We received IRB from the FGV Human Subjects Research Committee. IRB Number: 124/2019.
+
+- Pre-registered? Where?
+  + The design is pre-registered in the EGAP pre-registry tool under the number 201912AA. The pre-analysis plan, along with the registration info can be found in the following link: [https://osf.io/jn3up/](https://osf.io/jn3up/).
+
+- Funding? Role of funders in the experiment?
+  + The research has been funded by MacArthur Foundation and by Stanton Foundation. No funder interfered neither in the design nor in the implementation of this experiment.
+
+- Replication dataset? URL?
+  + The replication data is in the following GitHub repository: [https://github.com/umbertomig/nuclear-proliferation-survey](https://github.com/umbertomig/nuclear-proliferation-survey).
+
+## Session Information
+
+We use `r R.version.string` to write this appendix. For the regression models estimation, we use the package `lfe`. Everything in this report is fully automated and can be reproduced using R Markdown.
+
+```{r}
+sessionInfo()
+```
