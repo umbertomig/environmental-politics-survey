@@ -5,7 +5,7 @@ author:
 - "Guilherme N. Fasolin[^fasolin]"
 - "Umberto Mignozzetti[^mignozzetti]"
 - "Matias Spektor[^spektor]"
-date: September 19, 2020
+date: October 04, 2020
 fontfamily: libertine
 fontawesome: yes
 fontsize: 12pt
@@ -53,7 +53,7 @@ pkgs <- c('tidyverse', 'readxl', 'stringr',
           'weights','knitr','broom','gtools',
           'huxtable', 'compareGroups', 'lfe',
           'kableExtra', 'interplot', 'gridExtra',
-          'miceadds')
+          'miceadds', 'ggpubr', 'car')
 
 installIfNot <- function(x) {
   if(x %in% rownames(installed.packages()) == FALSE) 
@@ -335,6 +335,81 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           dep.var.labels.include=F)
 ```
 
+## ANOVA for testing the Factorial Design effects
+
+We run an analysis of variation (ANOVA) to check which treatment variables in the factorial design had more influence over the Brazilian governmental climate action preferences.
+
+```{r, echo = FALSE, warning=FALSE}
+mod1 <- aov(outcbin ~ trsource*trgovresp, data = wave1, weights = wave1$wts)
+aux <- data.frame(summary(mod1)[[1]]) %>%
+  round(digits = 3)
+aux <- data.frame(Variables = c('Source of Criticism','Govt. Response',
+                                'Source x Govt. Response', 'Residuals'), aux)
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA -- Wave 1\\label{aov1w1}',
+        booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Using robust standard errors, we have the following ANOVA table with corrected p-values, that show largely the same output: the preference is solely determined by the type response by the Brazilian government.
+
+```{r, echo = FALSE, warning=FALSE}
+aux <- data.frame(Variables = c('Source of Criticism','Govt. Response',
+                                'Source x Govt. Response', 'Residuals'), 
+                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA (Robust Covariance Matrix) -- Wave 1\\label{aov2w1}',
+        booktabs = T) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Both tests lead to the same result: the governmental response is the most important variable in determine the preferences for the governmental respose. The source of the criticism against the Brazilian climate mistakes has no influence on the popular preferences.
+
+We also tested whether the National Attachment Scale has an heterogeneous effect over the governmental response toward the criticism. Theoretically, we would expect that nationalist respondents would dislike more the criticism coming from an advarsary while they could be at ease with a criticism from an ally. The tests show that this does not hold empirically, with the National Attachment only mediating the governmental respose.
+
+
+```{r, echo = FALSE, warning=FALSE}
+mod1 <- aov(outcbin ~ trsource*trgovresp*natscale, data = wave1, weights = wave1$wts)
+aux <- data.frame(summary(mod1)[[1]]) %>%
+  round(digits = 3)
+aux <- data.frame(Variables = c('Source of Criticism',
+                                'Govt. Response',
+                                'National Attachment Scale (NAS)',
+                                'Source x Govt. Response', 
+                                'Source x NAS', 
+                                'Govt. Response x NAS',
+                                'Source x Govt. Response x NAS',
+                                'Residuals'), aux)
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA: Full Model plus National Attachment Scale -- Wave 1\\label{aov3w1}',
+        booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+
+aux <- data.frame(Variables = c('Source of Criticism',
+                                'Govt. Response',
+                                'National Attachment Scale (NAS)',
+                                'Source x Govt. Response', 
+                                'Source x NAS', 
+                                'Govt. Response x NAS',
+                                'Source x Govt. Response x NAS',
+                                'Residuals'), 
+                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA: Full Model plus National Attachment Scale (Robust Covariance Matrix) -- Wave 1\\label{aov4w1}',
+        booktabs = T) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+The National Attachment Scale seems to mediate the effects. However, the National Attachment only interacts with the response type. The source of the criticism has no significant influence, even when controlling for the National Attachment Level of the respondent.
+
 ## Robustness Checks
 
 We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Importantly, all the results remain similar to the ones presented in the main models.
@@ -426,6 +501,115 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           keep.stat="n", 
           header = F,
           dep.var.labels.include=F)
+```
+
+## Paper Contents
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Source versus National Attachment Scale Heterogeneous Effects'}
+mod <- list()
+trst2 <- wave1$trstatus
+levels(trst2) <- c('RSAlly','RMAlly','RCAlly','ABAlly',
+                   'RSAdv','RMAdv','RCAdv','ABAdv')
+trst2 <- relevel(trst2, ref = 'RSAdv')
+mod[[1]] <- lm.cluster(outcbin ~ trst2*natscale, 
+                 data = wave1,
+                 weights = wave1$wts,
+                 cluster = wave1$region)
+trst2 <- relevel(trst2, ref = 'RSAlly')
+mod[[2]] <- lm.cluster(outcbin ~ trst2*natscale, 
+                 data = wave1,
+                 weights = wave1$wts,
+                 cluster = wave1$region)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RSAlly', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Source = 'Ally')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[2]]$lm_res,var1 = 'trst2RSAdv', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Source = 'Adversary')) %>%
+  mutate(Source = factor(Source))
+
+p1 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Source)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Remain Silent x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMAdv', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Source = 'Adversary')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMAlly', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Source = 'Ally')) %>%
+  mutate(Source = factor(Source))
+
+p2 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Source)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Recognize Mistakes x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2ABAdv', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Source = 'Adversary')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2ABAlly', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Source = 'Ally')) %>%
+  mutate(Source = factor(Source))
+
+p3 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Source)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Abandon Treaties x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RCAdv', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Source = 'Adversary')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RCAlly', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Source = 'Ally')) %>%
+  mutate(Source = factor(Source))
+
+p4 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Source)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Reject Criticism x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ```
 
 \pagebreak
@@ -705,6 +889,82 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           dep.var.labels.include=F)
 ```
 
+## ANOVA for testing the Factorial Design effects
+
+We run an analysis of variation (ANOVA) to check which treatment variables in the factorial design had more influence over the Brazilian governmental climate action preferences.
+
+```{r, echo = FALSE, warning=FALSE}
+mod1 <- aov(outcbin ~ trcontent*trgovresp, data = wave2, weights = wave2$wts)
+aux <- data.frame(summary(mod1)[[1]]) %>%
+  round(digits = 3)
+aux <- data.frame(Variables = c('Liberal Content',
+                                'Govt. Response',
+                                'Liberal Content x Govt. Response', 
+                                'Residuals'), aux)
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA -- Wave 2\\label{aov1w2}',
+        booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Using robust standard errors, we have the following ANOVA table with corrected p-values, that show largely the same output: the preference is solely determined by the type response by the Brazilian government.
+
+```{r, echo = FALSE, warning=FALSE}
+aux <- data.frame(Variables = c('Liberal Content',
+                                'Govt. Response',
+                                'Liberal Content x Govt. Response', 
+                                'Residuals'), 
+                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA (Robust Covariance Matrix) -- Wave 2\\label{aov2w2}',
+        booktabs = T) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
+Both tests lead to the same result: the message content, either neutral or liberal, has no influence over the responses. The response type is the most important variable in determine the preferences for the governmental respose.
+
+We also tested whether the National Attachment Scale has an heterogeneous effect over the governmental response toward the criticism. Theoretically, we would expect that nationalist respondents would dislike liberal messages claiming that the Amazon basin is a humankind good. The tests show a small interaction between national attachment and the content of the criticism, but overall no three-way interaction between message content, the governmental response, and the national attachment. National attachment, as in the first wave, remains the most powerful variable to explain the governmental response.
+
+```{r, echo = FALSE, warning=FALSE}
+mod1 <- aov(outcbin ~ trcontent*trgovresp*natscale, data = wave2, weights = wave2$wts)
+aux <- data.frame(summary(mod1)[[1]]) %>%
+  round(digits = 3)
+aux <- data.frame(Variables = c('Liberal Content',
+                                'Govt. Response',
+                                'National Attachment Scale (NAS)',
+                                'Liberal Content x Govt. Response', 
+                                'Liberal Content x NAS', 
+                                'Govt. Response x NAS',
+                                'Liberal Content x Govt. Response x NAS',
+                                'Residuals'), aux)
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA: Full Model plus National Attachment Scale -- Wave 2\\label{aov3w2}',
+        booktabs = T)  %>%
+  kable_styling(latex_options = "hold_position")
+
+aux <- data.frame(Variables = c('Liberal Content',
+                                'Govt. Response',
+                                'National Attachment Scale (NAS)',
+                                'Liberal Content x Govt. Response', 
+                                'Liberal Content x NAS', 
+                                'Govt. Response x NAS',
+                                'Liberal Content x Govt. Response x NAS',
+                                'Residuals'), 
+                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
+row.names(aux) <- NULL
+names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
+aux %>%
+  kable(caption = 'ANOVA: Full Model plus National Attachment Scale (Robust Covariance Matrix) -- Wave 2\\label{aov4w2}',
+        booktabs = T) %>%
+  kable_styling(latex_options = "hold_position")
+```
+
 ## Robustness Checks
 
 We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Importantly, all the results remain similar to the ones presented in the main models.
@@ -796,6 +1056,115 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           keep.stat="n", 
           header = F,
           dep.var.labels.include=F)
+```
+
+## Paper Contents
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff2}Content versus National Attachment Scale Heterogeneous Effects'}
+mod <- list()
+trst2 <- wave2$trstatus
+levels(trst2) <- c('RSCtrl','RMCtrl','RCCtrl','ABCtrl',
+                   'RSLib','RMLib','RCLib','ABLib')
+mod[[1]] <- lm.cluster(outcbin ~ trst2*natscale, 
+                 data = wave2,
+                 weights = wave2$wts,
+                 cluster = wave2$region)
+trst2 <- relevel(trst2, ref = 'RSLib')
+mod[[2]] <- lm.cluster(outcbin ~ trst2*natscale, 
+                       data = wave2,
+                       weights = wave2$wts,
+                       cluster = wave2$region)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RSLib', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Content = 'Liberal') %>%
+  mutate(Content = factor(Content))
+aux <- rbind(aux,
+             data.frame(interplot(mod[[2]]$lm_res,var1 = 'trst2RSCtrl', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Content = 'Control')) %>%
+  mutate(Content = factor(Content))
+
+p1 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Content)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Remain Silent x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMCtrl', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Content = 'Control')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMLib', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Content = 'Liberal')) %>%
+  mutate(Content = factor(Content))
+
+p2 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Content)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Recognize Mistakes x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2ABCtrl', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Content = 'Control')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2ABLib', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Content = 'Liberal')) %>%
+  mutate(Content = factor(Content))
+
+p3 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Content)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Abandon Treaties x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RCCtrl', 
+                            var2 = 'natscale', ci = 0.95,
+                            point = T, esize=1.2, plot=F), Content = 'Control')
+aux <- rbind(aux,
+             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RCLib', 
+                                  var2 = 'natscale', ci = 0.95,
+                                  point = T, esize=1.2, plot=F), Content = 'Liberal')) %>%
+  mutate(Content = factor(Content))
+
+p4 <- aux %>%
+  mutate(natscale = round(natscale, 2)) %>%
+  ggplot(aes(x = as.factor(natscale), y = coef, colour = Content)) +
+  geom_errorbar(aes(x = as.factor(natscale), y = coef,
+                    ymin = lb, 
+                    ymax = ub), width = 0.2,
+                position=position_dodge(0.4)) +
+  geom_point(position=position_dodge(0.4)) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() + facet_wrap(~'Reject Criticism x\nNat. Attachment Scale') +
+  xlab('') + scale_color_manual(values=c("red", "blue")) +
+  ylab('') + ylim(-1.01,1.01)
+
+ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ```
 
 \pagebreak
