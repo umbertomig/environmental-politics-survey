@@ -1181,41 +1181,32 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 ##	Subjects and Context
 
--	Eligibility and Exclusion criteria
-  + Subjects are selected by a representative sample of the Brazilian population collected by the [DataFolha pooling company](http://datafolha.folha.uol.com.br/). We restrict our sample to people over 18 years old.
-
-- Why was this subject pool selected?
-  + The selection was based on a representative sample of the adult Brazilian population.
+-	Who was eligible to participate in the study?
+  + The target population is comprised of Brazilian citizens over 18 years of age.
 
 - Who was eligible to participate in the study?
-  + Brazilian citizens, over 18 years old.
+  + Being non-Brazilian or under 18 years of age.
 
 - What would result in the exclusion of a participant?
   + Being a foreigner, or younger than 18 years old.
 
-- Were any aspects of recruitment changed after the recruitment began?
-  + No.
-
 - Procedures used to recruit and select participants
-  + The survey company samples the Brazilian municipalities to match the Brazilian Institute of Geography and Statistics. They put enumerators in places with large influx of people. Enumerators are instructed to gather a diverse pool of responses. Around 30 percent of responses are double-checked to ensure consistency.
+  + -	The survey company sampled municipalities to match the demographic composition laid out by the national census alongside age, income, education, gender, and region. We used the 2018 quota published by the Brazilian Institute of Geography and Statistics (IBGE) as a reference. Moreover, the survey company allocated enumerators in strategic places with a large influx of people. Around 30 percent of responses were double-checked for consistency.
 
 - Recruitment dates defining the periods of recruitment and when the experiments were conducted.
-  + The first wave of the experiment was fielded between XXXX and XXXX, 2020 The second wave of the experiment was fielded between XXXX and XXXX, 2020. As it is a face-to-face survey experiment, the recruitment is performed at the street level, where the company assigns the enumerator.
+  + -	The first and second wave of the experiment occurred between January 13 and January 17, 2020. As this was a face-to-face survey experiment, enumerators recruited respondents at the street level.
 
 - Dates of any repeated
-  + Not apply.
+  + Not applicable.
 
 - Settings and locations where the data were collected
-  + The data was collected using face-to-face data collection, where enumerators are placed in strategic places in the municipalities selected for the survey application. DataFolha performs the municipality selection according to the Brazilian Demographic Census and the population projections issued by the Brazilian Institute of Geography and Statistics.
+  + -	Enumerators were distributed in approximately 120 municipalities which were randomly selected by a stratum of the region, nature of the municipality (state capital, other metropolitan or interior regions), federal state, and municipality population size. The DataFolha Institute selected municipalities on the basis of the 2018 Brazilian Demographic Census and the population projections issued that year by the Brazilian Institute of Geography and Statistics (IBGE). Enumerators collected the data face-to-face.
 
 - Where? Field? Lab? Etc.
   + Face-to-face survey.
 
-- Relevant specifics about the population? College students?
-  + The target population is comprised of Brazilian with over 18 years old.
-
 - Survey: Response rate and how it was calculated
-  + The first survey wave had `r nrow(wave1)` respondents, and the second wave had a response rate of `r nrow(wave2)`.
+  + The first survey wave had `r nrow(wave1)` respondents, and the second wave had a response rate of `r nrow(wave2)`. The company did not supply data on attrition levels during the survey.
 
 ## Allocation Methods
 
@@ -1224,16 +1215,16 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + There were `r length(table(wave1$trstatus))` treatment arms in the first wave. The answers ranged from `r as.numeric(min(table(wave1$trstatus)))` to `r as.numeric(max(table(wave1$trstatus)))` participants in each treatment status. In the second wave, there were `r length(table(wave2$trstatus))` treatment arms. The answers ranged from `r as.numeric(min(table(wave2$trstatus)))` to `r as.numeric(max(table(wave2$trstatus)))` participants in each treatment status.
 
 - Random assignment
-  + Simple random assignment within the Region quota.
+  + Simple random assignment within the region quota.
 
 - Units of randomization
-  + The randomization was performed within Region quota, at the respondent's level.
+  + The randomization was performed within region quota at the respondent's level.
 
 - Cluster random assignment
   + Region. We use cluster-robust standard error, with Region as the cluster.
 
 - Evidence for random assignment
-  + We checked pre-treatment imbalance between control and the treatments in the following variables: Age, Gender, Education, Region, Income, and Religion.
+  + We checked pre-treatment imbalance between control and the treatments in all the following variables: age, gender, education, region, income, and religion.
 
 - Pre-treatment variables
   + We have six pre-treatment variables:
@@ -1245,80 +1236,82 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Religion
 
 - Characteristics of the population
-  + The population sampled was the entire Brazilian population.
+  + The groups of respondents are representative of the entire Brazilian population based on the 2010 national census including age, income, education, gender, and region issued  by the Brazilian Institute of Geography and Statistics (IBGE).
 
 - Block randomization
   + We did not use block randomization.
 
 - Blinding: Were participants unaware of the treatment assignment?
-  + Yes. The randomization had an equal chance to draw any of the vignettes for a given respondent. Respondents could not foresee which vignette was drawn, neither that there was more than one vignette as a possible question.
+  + Yes. The randomization had an equal chance of drawing any of the vignettes for any given respondent. Respondents could not foresee which vignette would be drawn nor could they see there was more than one vignette for each question. Moreover, the enumerators administering the survey did not inform the experimental nature of the research before the application of the instrument.
 
 - Were those administering the intervention unaware of the random assignment?
-  + No. The enumerators were trained to read each of the vignette questions that showed up on their tablets.
+  + No. The enumerators were informed about the random nature of the study and trained to read each of the vignette questions that showed up on their tablets without revealing the experimental nature of the research.
 
 - Checked whether blind was successful?
-  + Not apply.
+  + Not applicable.
 
 ## Treatments
 
 - Descriptions of the intervention:
   + The intervention will consist of XXXX steps.
-    + Step 1: XXXX
-    + Step 2: XXXX
-    + Step 3: Applying the experiment.
-    + Step 4: Collecting demographic characteristics.
+    + Step 1: Collecting information on the extent to which the respondents agree or disagree with two statements that tap into a national attachment scale (Hermann 2017).
+    + Step 2: Applying the survey experiment.
+    + Step 3: Collecting standard demographic characteristics.
 
 - Describe the treatment and control groups
-  + In the first wave, we had:
-    + Treatment 1: `r names(table(wave1$trstatus))[1]`
-    + Treatment 2: `r names(table(wave1$trstatus))[2]`
-    + Treatment 3: `r names(table(wave1$trstatus))[3]`
-    + Treatment 4: `r names(table(wave1$trstatus))[4]`
-    + Treatment 5: `r names(table(wave1$trstatus))[5]`
-    + Treatment 6: `r names(table(wave1$trstatus))[6]`
-    + Treatment 7: `r names(table(wave1$trstatus))[7]`
-    + Treatment 8: `r names(table(wave1$trstatus))[8]`
-  + In the second wave, we had:
-    + Treatment 1: `r names(table(wave2$trstatus))[1]`
-    + Treatment 2: `r names(table(wave2$trstatus))[2]`
-    + Treatment 3: `r names(table(wave2$trstatus))[3]`
-    + Treatment 4: `r names(table(wave2$trstatus))[4]`
-    + Treatment 5: `r names(table(wave2$trstatus))[5]`
-    + Treatment 6: `r names(table(wave2$trstatus))[6]`
-    + Treatment 7: `r names(table(wave2$trstatus))[7]`
-    + Treatment 8: `r names(table(wave2$trstatus))[8]`
+  + In the first wave of the survey experiment we assigned each respondent to one of the eight treatments. All respondents heard a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. We then randomized the source of criticism – ally and friend and adversary. Finally, we randomized all four possible reactions to shaming: silence, regret, rejection, and defiance. All the treatment conditions are outlined below.
+    + Treatment 1: Ally shaming, Remain silent.
+    + Treatment 2: Ally shaming, Express regret.
+    + Treatment 3: Ally shaming, Reject shaming.
+    + Treatment 4: Ally shaming, Defy shaming.
+    + Treatment 5: Adversary shaming, Remain silent
+    + Treatment 6: Adversary shaming, Express regret.
+    + Treatment 7: Adversary shaming, Reject shaming.
+    + Treatment 8: Adversary shaming, Defy shaming.
+
+  + In the second wave of the experiment we assigned each respondent to either the control condition or one of the treatment conditions. All respondents continued to hear about a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. While we mentioned that shaming came from a foreign country, we did not specify whether it is an ally or an adversary. However, we varied whether criticism was couched in *liberal internationalist* language or no information about the nature of criticism was provided. The range of possible responses to shaming continued to vary in terms of silence, regret, rejection, and defiance.
+    + Treatment 1: Foreign country shaming, Remain silent.
+    + Treatment 2: : Foreign country shaming, Express regret.
+    + Treatment 3: Foreign country shaming, Reject shaming.
+    + Treatment 4: Foreign country shaming, Defy shaming.
+    + Treatment 5: Foreign country shaming, Liberal internationalist language, Remain silent.
+    + Treatment 6: Foreign country shaming, Liberal internationalist language, Express regret.
+    + Treatment 7: Foreign country shaming, Liberal internationalist language, Reject shaming.
+    + Treatment 8: Foreign country shaming, Liberal internationalist language, Defy shaming.
+
 
 - Experimental instructions
-  + To introduce the experimental question, the enumerator reads the following instructions: _XXXX_. Then the enumerator asks the questions.
+  + To introduce the experimental question, the enumerator reads the following instructions:
+“*Everyone talks about wildfires and deforestation in the Amazon forest. We will read some imaginary scenarios and ask what you think of each*”. Then the enumerator asks the questions.
 
 - How and when manipulations were administered
-  + The manipulation will be applied after the measurement of step one and step two covariates (see above) but before the measurement of the demographic variables.
+  + -	The manipulation will be applied after the measurement of step one (see above), but before the measurement of the demographic variables.
 
 - Method of delivery
-  + The delivery was made by the enumerator reading the randomly selected vignette to the respondent.
+  + The delivery was made by the enumerator reading the randomly-selected experimental vignette to the respondent.
 
 - Software used to administer the treatment
-  + DataFolha uses the SurveyToGo software on their tablets. Respondents will also be handed cards with the description of the answer ranges.
+  + DataFolha Institute uses the SurveyToGo software on their tablets. Respondents also read cards with the description of the control or one of the treatment conditions.
 
 ## Results
 
 ### Outcome measures and covariates
 
 - Outcome measures
-  + The outcome measured in both waves is the level of support for nuclear proliferation in Brazil.
+  + The outcome measured in both waves is the level of support for different responses to foreign shaming.
 
 - Covariates
-  + **Heterogeneous Effects**: We use the variable `natscale`, a Nationalism Attachment Scale, for heterogeneous effects.
-  + **Pre-treatment Covariates**: We use the variables `age`, `income`, `schooling`, `education` and `religion` as pre-treatment covariates. Religion is absent from wave two as it was a variable that is sold separately from the other demographic characteristics.
+  + We use the variables age, income, education, gender, religion, race, and religion as **pre-treatment covariates**.
 
 - Survey Questionnaires
   + First Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
   + Second Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
 
 - Which outcomes and subgroup analysis were specified prior to the experiment?
-  + In the paper, we used a National Attachment Scale as heterogeneous effects. The National Attachment Scale consists of the following questions:
-    + _XXXX._
-    + _XXXX._
+  + In the paper, we use a **national attachment scale** to measure heterogeneous effects at the individual level. Items are drawn from previous work on national attachment (Herrmann, 2017; Powers et al., 2019; Bayram, 2017). In particular, we test how individuals scoring differently in national attachment on a values scale interact with our treatment conditions. The national attachment scale consists of a combination of the following two questions.
+    + “*When someone says something bad about Brazil, you feel it is as if they say something bad about you.*”
+    + “*Brazil should stand for national honor, even if it compromises its image in the world.*”
+    + The response options for each item are “agree totally,” “agree partially,” “neither agree or disagree,” “disagree partially,” and “disagree totally.”
 
 - Exploratory analysis? What find?
   + No exploratory analysis has been run.
@@ -1326,50 +1319,50 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ### CONSORT
 
 1. Number of subjects initially accessed for eligibility:
-  + In both waves, the survey company promised a sample of 2000 respondents. They give a sample of `r nrow(wave1)` and `r nrow(wave1)` in waves 1 and 2, respectively.
+  + We fielded a sample of 2001 and 2126 respondents in survey experiment 1 and survey experiment 2, respectively.
 
 2. Exclusions prior to random assignment
   + There were no exclusions.
 
 3. Subjects initially assigned to each experimental group
   + In the first wave:
-    + Treatment 1 (`r names(table(wave1$trstatus))[1]`): `r as.numeric(table(wave1$trstatus)[1])` respondents.
-    + Treatment 2 (`r names(table(wave1$trstatus))[2]`): `r as.numeric(table(wave1$trstatus)[2])` respondents.
-    + Treatment 3 (`r names(table(wave1$trstatus))[3]`): `r as.numeric(table(wave1$trstatus)[3])` respondents.
-    + Treatment 4 (`r names(table(wave1$trstatus))[4]`): `r as.numeric(table(wave1$trstatus)[4])` respondents.
-    + Treatment 5 (`r names(table(wave1$trstatus))[5]`): `r as.numeric(table(wave1$trstatus)[5])` respondents.
-    + Treatment 6 (`r names(table(wave1$trstatus))[6]`): `r as.numeric(table(wave1$trstatus)[6])` respondents.
-    + Treatment 7 (`r names(table(wave1$trstatus))[7]`): `r as.numeric(table(wave1$trstatus)[7])` respondents.
-    + Treatment 8 (`r names(table(wave1$trstatus))[8]`): `r as.numeric(table(wave1$trstatus)[8])` respondents.
+    + Treatment 1 (Ally shaming, Remain silent): `r as.numeric(table(wave1$trstatus)[1])` respondents.
+    + Treatment 2 (Ally shaming, Express regret): `r as.numeric(table(wave1$trstatus)[2])` respondents.
+    + Treatment 3 (Ally shaming, Reject shaming): `r as.numeric(table(wave1$trstatus)[3])` respondents.
+    + Treatment 4 (Ally shaming, Defy shaming): `r as.numeric(table(wave1$trstatus)[4])` respondents.
+    + Treatment 5 (Adversary shaming, Remain silent): `r as.numeric(table(wave1$trstatus)[5])` respondents.
+    + Treatment 6 (Adversary shaming, Express regret): `r as.numeric(table(wave1$trstatus)[6])` respondents.
+    + Treatment 7 (Adversary shaming, Reject shaming): `r as.numeric(table(wave1$trstatus)[7])` respondents.
+    + Treatment 8 (Adversary shaming, Defy shaming): `r as.numeric(table(wave1$trstatus)[8])` respondents.
   + In the second wave:
-    + Treatment 1 (`r names(table(wave2$trstatus))[1]`): `r as.numeric(table(wave2$trstatus)[1])` respondents.
-    + Treatment 2 (`r names(table(wave2$trstatus))[2]`): `r as.numeric(table(wave2$trstatus)[2])` respondents.
-    + Treatment 3 (`r names(table(wave2$trstatus))[3]`): `r as.numeric(table(wave2$trstatus)[3])` respondents.
-    + Treatment 4 (`r names(table(wave2$trstatus))[4]`): `r as.numeric(table(wave2$trstatus)[4])` respondents.
-    + Treatment 5 (`r names(table(wave2$trstatus))[5]`): `r as.numeric(table(wave2$trstatus)[5])` respondents.
-    + Treatment 6 (`r names(table(wave2$trstatus))[6]`): `r as.numeric(table(wave2$trstatus)[6])` respondents.
-    + Treatment 7 (`r names(table(wave2$trstatus))[7]`): `r as.numeric(table(wave2$trstatus)[7])` respondents.
-    + Treatment 8 (`r names(table(wave2$trstatus))[8]`): `r as.numeric(table(wave2$trstatus)[8])` respondents.
+    + Treatment 1 (Foreign country shaming, Remain silent): `r as.numeric(table(wave2$trstatus)[1])` respondents.
+    + Treatment 2 (Foreign country shaming, Express regret): `r as.numeric(table(wave2$trstatus)[2])` respondents.
+    + Treatment 3 (Foreign country shaming, Reject shaming): `r as.numeric(table(wave2$trstatus)[3])` respondents.
+    + Treatment 4 (Foreign country shaming, Defy shaming): `r as.numeric(table(wave2$trstatus)[4])` respondents.
+    + Treatment 5 (Foreign country shaming, Liberal internationalist language, Remain silent): `r as.numeric(table(wave2$trstatus)[5])` respondents.
+    + Treatment 6 (Foreign country shaming, Liberal internationalist language, Express regret): `r as.numeric(table(wave2$trstatus)[6])` respondents.
+    + Treatment 7 (Foreign country shaming, Liberal internationalist language, Reject shaming): `r as.numeric(table(wave2$trstatus)[7])` respondents.
+    + Treatment 8 (Foreign country shaming, Liberal internationalist language, Defy shaming): `r as.numeric(table(wave2$trstatus)[8])` respondents.
 
 4. Proportion received x not received intervention:
   + In the first wave:
-    + Treatment 1 (`r names(table(wave1$trstatus))[1]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[1]*100,2)` percent.
-    + Treatment 2 (`r names(table(wave1$trstatus))[2]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[2]*100,2)` percent.
-    + Treatment 3 (`r names(table(wave1$trstatus))[3]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[3]*100,2)` percent.
-    + Treatment 4 (`r names(table(wave1$trstatus))[4]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[4]*100,2)` percent.
-    + Treatment 5 (`r names(table(wave1$trstatus))[5]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[5]*100,2)` percent.
-    + Treatment 6 (`r names(table(wave1$trstatus))[6]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[6]*100,2)` percent.
-    + Treatment 7 (`r names(table(wave1$trstatus))[7]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[7]*100,2)` percent.
-    + Treatment 8 (`r names(table(wave1$trstatus))[8]`): `r round(as.numeric(prop.table(table(wave1$trstatus)))[8]*100,2)` percent.
+    + Treatment 1 (Ally shaming, Remain silent): `r round(as.numeric(prop.table(table(wave1$trstatus)))[1]*100,2)` percent.
+    + Treatment 2 (Ally shaming, Express regret): `r round(as.numeric(prop.table(table(wave1$trstatus)))[2]*100,2)` percent.
+    + Treatment 3 (Ally shaming, Reject shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[3]*100,2)` percent.
+    + Treatment 4 (Ally shaming, Defy shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[4]*100,2)` percent.
+    + Treatment 5 (Adversary shaming, Remain silent): `r round(as.numeric(prop.table(table(wave1$trstatus)))[5]*100,2)` percent.
+    + Treatment 6 (Adversary shaming, Express regret): `r round(as.numeric(prop.table(table(wave1$trstatus)))[6]*100,2)` percent.
+    + Treatment 7 (Adversary shaming, Reject shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[7]*100,2)` percent.
+    + Treatment 8 (Adversary shaming, Defy shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[8]*100,2)` percent.
   + In the second wave:
-    + Treatment 1 (`r names(table(wave2$trstatus))[1]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[1]*100,2)` percent.
-    + Treatment 2 (`r names(table(wave2$trstatus))[2]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[2]*100,2)` percent.
-    + Treatment 3 (`r names(table(wave2$trstatus))[3]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[3]*100,2)` percent.
-    + Treatment 4 (`r names(table(wave2$trstatus))[4]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[4]*100,2)` percent.
-    + Treatment 5 (`r names(table(wave2$trstatus))[5]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[5]*100,2)` percent.
-    + Treatment 6 (`r names(table(wave2$trstatus))[6]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[6]*100,2)` percent.
-    + Treatment 7 (`r names(table(wave2$trstatus))[7]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[7]*100,2)` percent.
-    + Treatment 8 (`r names(table(wave2$trstatus))[8]`): `r round(as.numeric(prop.table(table(wave2$trstatus)))[8]*100,2)` percent.
+    + Treatment 1 (Foreign country shaming, Remain silent): `r round(as.numeric(prop.table(table(wave2$trstatus)))[1]*100,2)` percent.
+    + Treatment 2 (Foreign country shaming, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[2]*100,2)` percent.
+    + Treatment 3 (Foreign country shaming, Reject shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[3]*100,2)` percent.
+    + Treatment 4 (Foreign country shaming, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[4]*100,2)` percent.
+    + Treatment 5 (Foreign country shaming, Liberal internationalist language, Remain silent): `r round(as.numeric(prop.table(table(wave2$trstatus)))[5]*100,2)` percent.
+    + Treatment 6 (Foreign country shaming, Liberal internationalist language, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[6]*100,2)` percent.
+    + Treatment 7 (Foreign country shaming, Liberal internationalist language, Reject shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[7]*100,2)` percent.
+    + Treatment 8 (Foreign country shaming, Liberal internationalist language, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[8]*100,2)` percent.
 
 5. Why did not receive intervention?
   + The study is a case-control study.
@@ -1378,7 +1371,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + No respondent was dropped.
 
 7. Number included and any reason for exclusion
-  + Not apply.
+  + Not applicable.
 
 ### Statistical analysis
 
@@ -1416,13 +1409,13 @@ wave2 %>%
   + Not apply
 
 - If use block randomization, ITT by block or overall means using IPW
-  + Not apply.
+  + Not applicable.
 
 - Standard errors:
   + Cluster-robust standard errors, clustering at the Region level.
 
 - Attrition:
-  + Not apply.
+  + Not applicable.
 
 - Analyze pre-treatment variables to check reasons
   + See the pre-treatment balance section.
@@ -1434,7 +1427,7 @@ wave2 %>%
   + See the descriptive statistics section for each of the waves.
 
 - Method for addressing missing data
-  + Not apply.
+  + Not applicable.
 
 - Summary missing data by subgroup
   + For the first wave:
