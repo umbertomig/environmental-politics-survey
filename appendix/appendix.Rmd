@@ -5,7 +5,7 @@ author:
 - "Guilherme N. Fasolin[^fasolin]"
 - "Umberto Mignozzetti[^mignozzetti]"
 - "Matias Spektor[^spektor]"
-date: October 04, 2020
+date: November 11, 2020
 fontfamily: libertine
 fontawesome: yes
 fontsize: 12pt
