@@ -2,10 +2,10 @@
 title: |
        | Supplementary Materials for "Responses to Foreign Shaming over Climate Policy among Nationalist"
 author: 
-- "Guilherme N. Fasolin[^fasolin]"
-- "Umberto Mignozzetti[^mignozzetti]"
 - "Matias Spektor[^spektor]"
-date: November 11, 2020
+- "Umberto Mignozzetti[^mignozzetti]"
+- "Guilherme N. Fasolin[^fasolin]"
+date: November 15, 2020
 fontfamily: libertine
 fontawesome: yes
 fontsize: 12pt
@@ -26,11 +26,11 @@ output:
 
 \appendix
 
-[^fasolin]: Research Associate, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <guilherme.fasolin@fgv.br>, <https://github.com/GuilhermeFasolin>.
+[^spektor]: Associate Professor, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <matias.spektor@fgv.br>, <https://www.matiasspektor.com/>.
 
 [^mignozzetti]: Visiting Assistant Professor, Department of Quantitative Theory and Methods, Emory University. Contact: [umberto.mignozzetti@emory.edu](mailto:umberto.mignozzetti@emory.edu), <http://umbertomig.com>.
 
-[^spektor]: Associate Professor, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <matias.spektor@fgv.br>, <https://www.matiasspektor.com/>.
+[^fasolin]: Research Associate, School of International Relations, Fundação Getulio Vargas, Brazil. Contact: <guilherme.fasolin@fgv.br>, <https://github.com/GuilhermeFasolin>.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
@@ -96,7 +96,7 @@ In the wave 1 dataset (`wave1` R object), we have the following variables:
 14. **`region`**: Brazilian region.
 15. **`wts`**: Weights computed by the DataFolha Institute.
 
-Our analysis comes from a sample of `r dim(wave1)[1]` Brazilian administered in January by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave1)[1]` Brazilian administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
 
 ```{r}
 aux <- wave1 %>%
@@ -183,7 +183,7 @@ The pre-treatment variables in this wave were:
 5. Income
 6. Religion
 
-To check whether we have a well-balanced sample across the experiment, with demographic groups evenly distributed across them, we perform two types of balancing tests. For the continuous variables, we perform an F-test, and for the categorical variables, we run a Chi-Square test. Table \ref{baltestw1} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
+To have a well-balanced sample across the experiment, with demographic groups evenly distributed across them, we perform two types of balancing tests. For the continuous variables, we perform an F-test, and for the categorical variables, we run a Chi-Square test. Table \ref{baltestw1} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
 
 ```{r, echo = FALSE}
 # Age
@@ -248,7 +248,8 @@ aux %>%
 
 ## Treatment Effects
 
-We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign climate criticism, which are displayed in Table \ref{mainregw1}.
+We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign shaming, which are displayed in Table \ref{mainregw1}.
+
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -326,7 +327,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming',
+          title = 'Effects of National Attachment Scale on Public Support for Responses to Foreign Shaming',
           label = 'heteffw1',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
@@ -343,7 +344,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Robustness Checks
 
-We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Importantly, all the results remain similar to the ones presented in the main models.
+We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could potentially influence public attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Overall, all the results remain similar to the ones presented in the main models.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -418,7 +419,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           type = 'latex',
           style = 'apsr',
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
-          title = 'Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming (pre-treatments as controls)',
+          title = 'Effects of National Attachment Scale on Public Support for Responses to Foreign Shaming (pre-treatments as controls)',
           label = 'heteffw1prtr',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
@@ -436,7 +437,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Paper Figure
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Effects of National Attachment Scale on Public Support for Responses to Foreign Shaming'}
 mod <- list()
 trst2 <- wave1$trstatus
 levels(trst2) <- c('RSAlly','RMAlly','RCAlly','ABAlly',
@@ -574,7 +575,7 @@ In the wave 2 dataset (`wave2` R object), we have the following variables:
 14. **`region`**: Brazilian region.
 15. **`wts`**: Weights computed by the DataFolha Institute.
 
-Our analysis comes from a sample of `r dim(wave2)[1]` Brazilian administered in January by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave2)[1]` Brazilian administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
 
 ```{r, results = 'hide'}
 aux <- wave2 %>%
@@ -655,7 +656,7 @@ The pre-treatment variables in this wave were:
 5. Income
 6. Religion
 
-To check whether we have a well-balanced sample across the experiment, with demographic groups evenly distributed across them, we perform two types of balancing tests. For the continuous variables, we perform an F-test, and for the categorical variables, we run a Chi-Square test. Table \ref{baltestw2} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
+Similarly to wave 1, in wave 2 we perform an F-test for the continuous variables and a Chi-Square test for the categorical variables. Table \ref{baltestw2} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
 
 ```{r, echo = FALSE}
 # Age
@@ -736,7 +737,7 @@ aux %>%
 
 ## Treatment Effects
 
-We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to the nature of shaming, which are displayed in \ref{mainregw2}.
+We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign shaming, which are displayed in \ref{mainregw2}.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -761,7 +762,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Public Support for Government Responses to the Nature of Foreign Shaming',
+          title = 'Public Support for Government Responses to the Nature of Shaming Message',
           label = 'mainregw2',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
@@ -812,7 +813,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming',
+          title = 'Effects of National Attachment Scale on Public Support for Responses to the Nature of Shaming Message',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
@@ -829,7 +830,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Robustness Checks
 
-We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Importantly, all the results remain similar to the ones presented in the main models.
+We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change public attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Overall, all the results remain similar to the ones presented in the main models.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -854,7 +855,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Public Support for Government Responses to the Nature of Foreign Shaming (pre-treatments as controls)',
+          title = 'Public Support for Government Responses to the Nature of Shaming Message (pre-treatments as controls)',
           label = 'mainregw2prtr',
           align = T,
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
@@ -904,7 +905,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           type = 'latex',
           style = 'apsr',
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
-          title = 'Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming (pre-treatments as controls)',
+          title = 'Effects of National Attachment Scale on Public Support for Responses to the Nature of Shaming Message (pre-treatments as controls)',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
@@ -922,7 +923,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Paper Figure
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff2}Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming.'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff2}Effects of National Attachment Scale on Public Support for Responses to the Nature of Shaming Message.'}
 mod <- list()
 trst2 <- wave2$trstatus
 levels(trst2) <- c('RSCtrl','RMCtrl','RCCtrl','ABCtrl',
@@ -1046,13 +1047,12 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ##	Subjects and Context
 
 -	Who was eligible to participate in the study?
-  + The target population is comprised of Brazilian citizens over 18 years of age.
 
-- Who was eligible to participate in the study?
-  + Being non-Brazilian or under 18 years of age.
+    + The target population is comprised of Brazilian citizens over 18 years of age.
 
 - What would result in the exclusion of a participant?
-  + Being a foreigner, or younger than 18 years old.
+
+    + Being a foreigner, or younger than 18 years old.
 
 - Procedures used to recruit and select participants
   + The survey company sampled municipalities to match the demographic composition laid out by the national census alongside age, income, education, gender, and region. We used the 2018 quota published by the Brazilian Institute of Geography and Statistics (IBGE) as a reference. Moreover, the survey company allocated enumerators in strategic places with a large influx of people. Around 30 percent of responses were double-checked for consistency.
@@ -1183,10 +1183,10 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ### CONSORT
 
 1. Number of subjects initially accessed for eligibility:
-  + We fielded a sample of 2001 and 2126 respondents in survey experiment 1 and survey experiment 2, respectively.
+    + We fielded a sample of 2001 and 2126 respondents in survey experiment 1 and survey experiment 2, respectively.
 
 2. Exclusions prior to random assignment
-  + There were no exclusions.
+   + There were no exclusions.
 
 3. Subjects initially assigned to each experimental group
   + In the first wave:
@@ -1231,13 +1231,13 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 8 (Foreign country shaming, Liberal internationalist language, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[8]*100,2)` percent.
 
 5. Why did not receive intervention?
-  + The study is a case-control study.
+    + The study is a case-control study.
 
 6. Number subjects each group dropped experiment
-  + No respondent was dropped.
+    + No respondent was dropped.
 
 7. Number included and any reason for exclusion
-  + Not applicable.
+    + Not applicable.
 
 ### Statistical analysis
 
