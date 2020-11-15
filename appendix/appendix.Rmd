@@ -96,7 +96,7 @@ In the wave 1 dataset (`wave1` R object), we have the following variables:
 14. **`region`**: Brazilian region.
 15. **`wts`**: Weights computed by the DataFolha Institute.
 
-Our analysis comes from a sample of `r dim(wave1)[1]` Brazilian administered in XXXX by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the subsection XXXX of the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave1)[1]` Brazilian administered in January by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
 
 ```{r}
 aux <- wave1 %>%
@@ -113,13 +113,19 @@ aux <- wave1 %>%
 ```
 
 ```{r, results='hide'}
-export2latex(descrTable(~., digits = 2, show.p.overall = F, show.all = T, data = aux))
+export2latex(
+  descrTable(~., 
+             digits = 2, 
+             show.p.overall = F, 
+             show.all = T, 
+             data = aux)
+)
 ```
 
 \pagebreak
 
 \begin{longtable}{lcc}
-\caption{Sample Characteristics -- Wave 1}\label{tab1w1ds}\\
+\caption{Sample Characteristics}\label{tab1w1ds}\\
 \hline  
 &     [ALL]     & \multirow{2}{*}{ N  }\\ 
 &    N=2001     &      \\ 
@@ -235,14 +241,14 @@ names(aux) <- c('Variable', 'Statistic', 'Value', 'P-Value')
 
 ```{r, echo = FALSE}
 aux %>%
-  kable(caption = 'Pre-Treatment Balance Tests -- Wave 1\\label{baltestw1}',
-        booktabs = T)  %>%
+  kable(caption = 'Pre-Treatment Balance Tests\\label{baltestw1}',
+        booktabs = T) %>%
   kable_styling(latex_options = "hold_position")
 ```
 
-## Treatment Effect
+## Treatment Effects
 
-We begin our analysis by run a linear regression to examine the main effects of our treatment conditions on public responses to foreign shaming. The results follow in the Table \ref{mainregw1}.
+We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign climate criticism, which are displayed in Table \ref{mainregw1}.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -258,20 +264,20 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Ally Shaming', 
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
+                               'Express Regret',
+                               'Defy Shaming',
                                'Reject Shaming',
-                               'Ally Shaming x Recognize Mistakes',
-                               'Ally Shaming x Abandon Treaties',
+                               'Ally Shaming x Express Regret',
+                               'Ally Shaming x Defy Shaming',
                                'Ally Shaming x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Responses to Shaming from Ally and Adversary -- Wave 1',
+          title = 'Public Support for Responses to Foreign Shaming',
           label = 'mainregw1',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) Adversary shaming; (2) Remain Silent; (3) Silence upon Adversary shaming.}',
+                    '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
@@ -286,7 +292,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Heterogeneous Effects -- National Attachment Scale
 
-Table \ref{heteffw1} shows how our treatments interact with individuals based on their national attachment scale scores. We outline and specify the expected interactions between national attachment and main treatments in the APSA Experimental Report section of this appendix.
+Table \ref{heteffw1} shows how our treatments interact with individuals based on their national attachment scale scores.
 
 ```{r, echo = FALSE, results = 'asis'}
 ## Heterogeneous effects
@@ -303,28 +309,28 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Ally',
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
-                               'Reject Criticism',
+                               'Express Regret',
+                               'Defy Shaming',
+                               'Reject Shaming',
                                'Nat. Scale',
-                               'Ally x Recognize Mistakes',
-                               'Ally x Abandon Treaties',
-                               'Ally x Reject Criticism',
+                               'Ally x Express Regret',
+                               'Ally x Defy Shaming',
+                               'Ally x Reject Shaming',
                                'Nat. Scale x Ally',
-                               'Nat. Scale x Recognize Mistakes',
-                               'Nat. Scale x Abandon Treaties',
-                               'Nat. Scale x Reject Criticism',
-                               'Nat. Scale x Ally x Recognize Mistakes',
-                               'Nat. Scale x Ally x Abandon Treaties',
-                               'Nat. Scale x Ally x Reject Criticism',
+                               'Nat. Scale x Express Regret',
+                               'Nat. Scale x Defy Shaming',
+                               'Nat. Scale x Reject Shaming',
+                               'Nat. Scale x Ally x Express Regret',
+                               'Nat. Scale x Ally x Defy Shaming',
+                               'Nat. Scale x Ally x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Nationalism Scale Heterogeneous Effects -- Wave 1',
+          title = 'Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming',
           label = 'heteffw1',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) Adversary shaming; (2) Remain Silent; (3) Silence upon Adversary shaming.}',
+                    '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
@@ -334,81 +340,6 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           header = F,
           dep.var.labels.include=F)
 ```
-
-## ANOVA for testing the Factorial Design effects
-
-We run an analysis of variation (ANOVA) to check which treatment variables in the factorial design had more influence over the Brazilian governmental climate action preferences.
-
-```{r, echo = FALSE, warning=FALSE}
-mod1 <- aov(outcbin ~ trsource*trgovresp, data = wave1, weights = wave1$wts)
-aux <- data.frame(summary(mod1)[[1]]) %>%
-  round(digits = 3)
-aux <- data.frame(Variables = c('Source of Criticism','Govt. Response',
-                                'Source x Govt. Response', 'Residuals'), aux)
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA -- Wave 1\\label{aov1w1}',
-        booktabs = T)  %>%
-  kable_styling(latex_options = "hold_position")
-```
-
-Using robust standard errors, we have the following ANOVA table with corrected p-values, that show largely the same output: the preference is solely determined by the type response by the Brazilian government.
-
-```{r, echo = FALSE, warning=FALSE}
-aux <- data.frame(Variables = c('Source of Criticism','Govt. Response',
-                                'Source x Govt. Response', 'Residuals'), 
-                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA (Robust Covariance Matrix) -- Wave 1\\label{aov2w1}',
-        booktabs = T) %>%
-  kable_styling(latex_options = "hold_position")
-```
-
-Both tests lead to the same result: the governmental response is the most important variable in determine the preferences for the governmental respose. The source of the criticism against the Brazilian climate mistakes has no influence on the popular preferences.
-
-We also tested whether the National Attachment Scale has an heterogeneous effect over the governmental response toward the criticism. Theoretically, we would expect that nationalist respondents would dislike more the criticism coming from an advarsary while they could be at ease with a criticism from an ally. The tests show that this does not hold empirically, with the National Attachment only mediating the governmental respose.
-
-
-```{r, echo = FALSE, warning=FALSE}
-mod1 <- aov(outcbin ~ trsource*trgovresp*natscale, data = wave1, weights = wave1$wts)
-aux <- data.frame(summary(mod1)[[1]]) %>%
-  round(digits = 3)
-aux <- data.frame(Variables = c('Source of Criticism',
-                                'Govt. Response',
-                                'National Attachment Scale (NAS)',
-                                'Source x Govt. Response', 
-                                'Source x NAS', 
-                                'Govt. Response x NAS',
-                                'Source x Govt. Response x NAS',
-                                'Residuals'), aux)
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA: Full Model plus National Attachment Scale -- Wave 1\\label{aov3w1}',
-        booktabs = T)  %>%
-  kable_styling(latex_options = "hold_position")
-
-aux <- data.frame(Variables = c('Source of Criticism',
-                                'Govt. Response',
-                                'National Attachment Scale (NAS)',
-                                'Source x Govt. Response', 
-                                'Source x NAS', 
-                                'Govt. Response x NAS',
-                                'Source x Govt. Response x NAS',
-                                'Residuals'), 
-                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA: Full Model plus National Attachment Scale (Robust Covariance Matrix) -- Wave 1\\label{aov4w1}',
-        booktabs = T) %>%
-  kable_styling(latex_options = "hold_position")
-```
-
-The National Attachment Scale seems to mediate the effects. However, the National Attachment only interacts with the response type. The source of the criticism has no significant influence, even when controlling for the National Attachment Level of the respondent.
 
 ## Robustness Checks
 
@@ -428,21 +359,21 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Ally Shaming', 
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
+                               'Express Regret',
+                               'Defy Shaming',
                                'Reject Shaming',
-                               'Ally Shaming x Recognize Mistakes',
-                               'Ally Shaming x Abandon Treaties',
+                               'Ally Shaming x Express Regret',
+                               'Ally Shaming x Defy Shaming',
                                'Ally Shaming x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Responses to Shaming (pre-treatment as controls) -- Wave 1',
+          title = 'Public Support for Responses to Foreign Shaming. (pre-treatments as controls)',
           label = 'mainregw1prtr',
           align = T,
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) Adversary shaming; (2) Remain Silent; (3) Silence upon Adversary shaming.}',
+                    '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
@@ -469,29 +400,29 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Ally',
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
-                               'Reject Criticism',
+                               'Express Regret',
+                               'Defy Shaming',
+                               'Reject Shaming',
                                'Nat. Scale',
-                               'Ally x Recognize Mistakes',
-                               'Ally x Abandon Treaties',
-                               'Ally x Reject Criticism',
+                               'Ally x Express Regret',
+                               'Ally x Defy Shaming',
+                               'Ally x Reject Shaming',
                                'Nat. Scale x Ally',
-                               'Nat. Scale x Recognize Mistakes',
-                               'Nat. Scale x Abandon Treaties',
-                               'Nat. Scale x Reject Criticism',
-                               'Nat. Scale x Ally x Recognize Mistakes',
-                               'Nat. Scale x Ally x Abandon Treaties',
-                               'Nat. Scale x Ally x Reject Criticism',
+                               'Nat. Scale x Express Regret',
+                               'Nat. Scale x Defy Shaming',
+                               'Nat. Scale x Reject Shaming',
+                               'Nat. Scale x Ally x Express Regret',
+                               'Nat. Scale x Ally x Defy Shaming',
+                               'Nat. Scale x Ally x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
-          title = 'Nationalism Scale Heterogeneous Effects (pre-treatment as controls) -- Wave 1',
+          title = 'Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming (pre-treatments as controls)',
           label = 'heteffw1prtr',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) Adversary shaming; (2) Remain Silent; (3) Silence upon Adversary shaming.}',
+                    '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
@@ -503,9 +434,9 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           dep.var.labels.include=F)
 ```
 
-## Paper Contents
+## Paper Figure
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Source versus National Attachment Scale Heterogeneous Effects'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff}Effects of National Attachment Scale on Public Support for Government Responses to Foreign Shaming'}
 mod <- list()
 trst2 <- wave1$trstatus
 levels(trst2) <- c('RSAlly','RMAlly','RCAlly','ABAlly',
@@ -523,11 +454,14 @@ mod[[2]] <- lm.cluster(outcbin ~ trst2*natscale,
 
 aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RSAlly', 
                             var2 = 'natscale', ci = 0.95,
-                            point = T, esize=1.2, plot=F), Source = 'Ally')
+                            point = T, esize=1.2, plot=F), 
+                  Source = 'Ally')
 aux <- rbind(aux,
-             data.frame(interplot(mod[[2]]$lm_res,var1 = 'trst2RSAdv', 
+             data.frame(
+               interplot(mod[[2]]$lm_res,var1 = 'trst2RSAdv', 
                                   var2 = 'natscale', ci = 0.95,
-                                  point = T, esize=1.2, plot=F), Source = 'Adversary')) %>%
+                                  point = T, esize=1.2, plot=F), 
+               Source = 'Adversary')) %>%
   mutate(Source = factor(Source))
 
 p1 <- aux %>%
@@ -545,11 +479,14 @@ p1 <- aux %>%
 
 aux <- data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMAdv', 
                             var2 = 'natscale', ci = 0.95,
-                            point = T, esize=1.2, plot=F), Source = 'Adversary')
+                            point = T, esize=1.2, plot=F), 
+                  Source = 'Adversary')
 aux <- rbind(aux,
-             data.frame(interplot(mod[[1]]$lm_res,var1 = 'trst2RMAlly', 
+             data.frame(
+               interplot(mod[[1]]$lm_res,var1 = 'trst2RMAlly', 
                                   var2 = 'natscale', ci = 0.95,
-                                  point = T, esize=1.2, plot=F), Source = 'Ally')) %>%
+                                  point = T, esize=1.2, plot=F), 
+                        Source = 'Ally')) %>%
   mutate(Source = factor(Source))
 
 p2 <- aux %>%
@@ -561,7 +498,8 @@ p2 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Recognize Mistakes x\nNat. Attachment Scale') +
+  theme_bw() + 
+  facet_wrap(~'Express Regret x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -583,7 +521,7 @@ p3 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Abandon Treaties x\nNat. Attachment Scale') +
+  theme_bw() + facet_wrap(~'Defy Shaming x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -605,7 +543,7 @@ p4 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Reject Criticism x\nNat. Attachment Scale') +
+  theme_bw() + facet_wrap(~'Reject Shaming x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -636,7 +574,7 @@ In the wave 2 dataset (`wave2` R object), we have the following variables:
 14. **`region`**: Brazilian region.
 15. **`wts`**: Weights computed by the DataFolha Institute.
 
-Our analysis comes from a sample of `r dim(wave2)[1]` Brazilian administered in XXXX by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the subsection XXXX of the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave2)[1]` Brazilian administered in January by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
 
 ```{r, results = 'hide'}
 aux <- wave2 %>%
@@ -659,7 +597,7 @@ export2latex(descrTable(~., digits = 2, show.p.overall = F,
 
 \pagebreak
 
-\begin{longtable}{lcc}\caption{Sample Characteristics -- Wave 2}\label{tab1w2ds}\\
+\begin{longtable}{lcc}\caption{Sample Characteristics}\label{tab1w2ds}\\
 \hline  
 &     [ALL]     & \multirow{2}{*}{ N  }\\ 
 &    N=2126     &      \\ 
@@ -775,7 +713,7 @@ names(aux) <- c('Variable', 'Statistic', 'Value', 'P-Value')
 
 ```{r, echo = FALSE}
 aux %>%
-  kable(caption = 'Pre-Treatment Balance Tests -- Wave 2\\label{baltestw2}',
+  kable(caption = 'Pre-Treatment Balance Tests \\label{baltestw2}',
         booktabs = T)  %>%
   kable_styling(latex_options = "hold_position")
 ```
@@ -792,13 +730,13 @@ When we adjust the p-values for multiple comparisons, all coefficients are insig
 aux$`Adj. P-Value` = (6/rank(aux$`P-Value`))*aux$`P-Value`
 aux$`Adj. P-Value`[aux$`Adj. P-Value`>1] = 1
 aux %>%
-  kable(caption = 'Pre-Treatment Balance Tests (with Multiple Comparison\'s Correction) -- Wave 2\\label{baltestmcw2}', booktabs = T) %>%
+  kable(caption = 'Pre-Treatment Balance Tests (with Multiple Comparison\'s Correction)\\label{baltestmcw2}', booktabs = T) %>%
   kable_styling(latex_options = "hold_position")
 ```
 
-## Treatment Effect
+## Treatment Effects
 
-We begin our analysis by run a linear regression to examine the main effects of our treatment conditions on public responses to foreign shaming. The results follow in the Table \ref{mainregw2}.
+We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to the nature of shaming, which are displayed in \ref{mainregw2}.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -814,20 +752,20 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Liberal Message', 
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
+                               'Express Regret',
+                               'Defy Shaming',
                                'Reject Shaming',
-                               'Liberal Message x Recognize Mistakes',
-                               'Liberal Message x Abandon Treaties',
+                               'Liberal Message x Express Regret',
+                               'Liberal Message x Defy Shaming',
                                'Liberal Message x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Responses to Shaming plus Liberal Message -- Wave 2',
+          title = 'Public Support for Government Responses to the Nature of Foreign Shaming',
           label = 'mainregw2',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) No liberal message (control); (2) Remain Silent; (3) Silence upon no liberal message.}',
+                    '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon no Liberal Message.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
@@ -840,7 +778,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 
 ## Heterogeneous Effects -- National Attachment Scale
 
-Table \ref{heteffw2} shows how our treatments interact with individuals based on their national attachment scale scores. We outline and specify the expected interactions between national attachment and main treatments in the APSA Experimental Report section of this appendix.
+Table \ref{heteffw2} shows how our treatments interact with individuals based on their national attachment scale scores.
 
 ```{r, echo = FALSE, results = 'asis'}
 ## Heterogeneous effects
@@ -857,24 +795,24 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Liberal Message',
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
-                               'Reject Criticism',
+                               'Express Regret',
+                               'Defy Shaming',
+                               'Reject Shaming',
                                'Nat. Scale',
-                               'Liberal Message x Recognize Mistakes',
-                               'Liberal Message Message x Abandon Treaties',
-                               'Liberal Message x Reject Criticism',
+                               'Liberal Message x Express Regret',
+                               'Liberal Message Message x Defy Shaming',
+                               'Liberal Message x Reject Shaming',
                                'Nat. Scale x Liberal Message',
-                               'Nat. Scale x Recognize Mistakes',
-                               'Nat. Scale x Abandon Treaties',
-                               'Nat. Scale x Reject Criticism',
-                               'Nat. Scale x Liberal Message x Recognize Mistakes',
-                               'Nat. Scale x Liberal Message x Abandon Treaties',
-                               'Nat. Scale x Liberal Message x Reject Criticism',
+                               'Nat. Scale x Express Regret',
+                               'Nat. Scale x Defy Shaming',
+                               'Nat. Scale x Reject Shaming',
+                               'Nat. Scale x Liberal Message x Express Regret',
+                               'Nat. Scale x Liberal Message x Defy Shaming',
+                               'Nat. Scale x Liberal Message x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Nationalism Scale Heterogeneous Effects -- Wave 2',
+          title = 'Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
@@ -887,82 +825,6 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           keep.stat="n", 
           header = F,
           dep.var.labels.include=F)
-```
-
-## ANOVA for testing the Factorial Design effects
-
-We run an analysis of variation (ANOVA) to check which treatment variables in the factorial design had more influence over the Brazilian governmental climate action preferences.
-
-```{r, echo = FALSE, warning=FALSE}
-mod1 <- aov(outcbin ~ trcontent*trgovresp, data = wave2, weights = wave2$wts)
-aux <- data.frame(summary(mod1)[[1]]) %>%
-  round(digits = 3)
-aux <- data.frame(Variables = c('Liberal Content',
-                                'Govt. Response',
-                                'Liberal Content x Govt. Response', 
-                                'Residuals'), aux)
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA -- Wave 2\\label{aov1w2}',
-        booktabs = T)  %>%
-  kable_styling(latex_options = "hold_position")
-```
-
-Using robust standard errors, we have the following ANOVA table with corrected p-values, that show largely the same output: the preference is solely determined by the type response by the Brazilian government.
-
-```{r, echo = FALSE, warning=FALSE}
-aux <- data.frame(Variables = c('Liberal Content',
-                                'Govt. Response',
-                                'Liberal Content x Govt. Response', 
-                                'Residuals'), 
-                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA (Robust Covariance Matrix) -- Wave 2\\label{aov2w2}',
-        booktabs = T) %>%
-  kable_styling(latex_options = "hold_position")
-```
-
-Both tests lead to the same result: the message content, either neutral or liberal, has no influence over the responses. The response type is the most important variable in determine the preferences for the governmental respose.
-
-We also tested whether the National Attachment Scale has an heterogeneous effect over the governmental response toward the criticism. Theoretically, we would expect that nationalist respondents would dislike liberal messages claiming that the Amazon basin is a humankind good. The tests show a small interaction between national attachment and the content of the criticism, but overall no three-way interaction between message content, the governmental response, and the national attachment. National attachment, as in the first wave, remains the most powerful variable to explain the governmental response.
-
-```{r, echo = FALSE, warning=FALSE}
-mod1 <- aov(outcbin ~ trcontent*trgovresp*natscale, data = wave2, weights = wave2$wts)
-aux <- data.frame(summary(mod1)[[1]]) %>%
-  round(digits = 3)
-aux <- data.frame(Variables = c('Liberal Content',
-                                'Govt. Response',
-                                'National Attachment Scale (NAS)',
-                                'Liberal Content x Govt. Response', 
-                                'Liberal Content x NAS', 
-                                'Govt. Response x NAS',
-                                'Liberal Content x Govt. Response x NAS',
-                                'Residuals'), aux)
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'SumSq', 'MeanSq', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA: Full Model plus National Attachment Scale -- Wave 2\\label{aov3w2}',
-        booktabs = T)  %>%
-  kable_styling(latex_options = "hold_position")
-
-aux <- data.frame(Variables = c('Liberal Content',
-                                'Govt. Response',
-                                'National Attachment Scale (NAS)',
-                                'Liberal Content x Govt. Response', 
-                                'Liberal Content x NAS', 
-                                'Govt. Response x NAS',
-                                'Liberal Content x Govt. Response x NAS',
-                                'Residuals'), 
-                  round(data.frame(Anova(mod1, white.adjust=TRUE)), 3))
-row.names(aux) <- NULL
-names(aux) <- c('Variables', 'DF', 'F-Val', 'P-Val')
-aux %>%
-  kable(caption = 'ANOVA: Full Model plus National Attachment Scale (Robust Covariance Matrix) -- Wave 2\\label{aov4w2}',
-        booktabs = T) %>%
-  kable_styling(latex_options = "hold_position")
 ```
 
 ## Robustness Checks
@@ -983,21 +845,21 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Liberal Message', 
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
+                               'Express Regret',
+                               'Defy Shaming',
                                'Reject Shaming',
-                               'Liberal Message x Recognize Mistakes',
-                               'Liberal Message x Abandon Treaties',
+                               'Liberal Message x Express Regret',
+                               'Liberal Message x Defy Shaming',
                                'Liberal Message x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Responses to Shaming plus Liberal Message (pre-treatment as controls) -- Wave 2',
+          title = 'Public Support for Government Responses to the Nature of Foreign Shaming (pre-treatments as controls)',
           label = 'mainregw2prtr',
           align = T,
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
-                    '{\\footnotesize Reference category: (1) No liberal message (control); (2) Remain Silent; (3) Silence upon no liberal message.}',
+                    '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon no Liberal Message.}',
                     '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
@@ -1024,25 +886,25 @@ mod[[3]] <- felm(
 
 stargazer(mod[[1]],mod[[2]],mod[[3]],
           covariate.labels = c('Liberal Message',
-                               'Recognize Mistakes',
-                               'Abandon Treaties',
-                               'Reject Criticism',
+                               'Express Regret',
+                               'Defy Shaming',
+                               'Reject Shaming',
                                'Nat. Scale',
-                               'Liberal Message x Recognize Mistakes',
-                               'Liberal Message Message x Abandon Treaties',
-                               'Liberal Message x Reject Criticism',
+                               'Liberal Message x Express Regret',
+                               'Liberal Message Message x Defy Shaming',
+                               'Liberal Message x Reject Shaming',
                                'Nat. Scale x Liberal Message',
-                               'Nat. Scale x Recognize Mistakes',
-                               'Nat. Scale x Abandon Treaties',
-                               'Nat. Scale x Reject Criticism',
-                               'Nat. Scale x Liberal Message x Recognize Mistakes',
-                               'Nat. Scale x Liberal Message x Abandon Treaties',
-                               'Nat. Scale x Liberal Message x Reject Criticism',
+                               'Nat. Scale x Express Regret',
+                               'Nat. Scale x Defy Shaming',
+                               'Nat. Scale x Reject Shaming',
+                               'Nat. Scale x Liberal Message x Express Regret',
+                               'Nat. Scale x Liberal Message x Defy Shaming',
+                               'Nat. Scale x Liberal Message x Reject Shaming',
                                'Constant'),
           type = 'latex',
           style = 'apsr',
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
-          title = 'Nationalism Scale Heterogeneous Effects (pre-treatment as controls) -- Wave 2',
+          title = 'Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming (pre-treatments as controls)',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
@@ -1058,9 +920,9 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           dep.var.labels.include=F)
 ```
 
-## Paper Contents
+## Paper Figure
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff2}Content versus National Attachment Scale Heterogeneous Effects'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, cache=TRUE, out.width='1\\linewidth', fig.width=8, fig.height=8, fig.show='hold', fig.align='center', fig.cap='\\label{heteff2}Effects of National Attachment Scale on Public Support for Government Responses to the Nature of Shaming.'}
 mod <- list()
 trst2 <- wave2$trstatus
 levels(trst2) <- c('RSCtrl','RMCtrl','RCCtrl','ABCtrl',
@@ -1116,7 +978,7 @@ p2 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Recognize Mistakes x\nNat. Attachment Scale') +
+  theme_bw() + facet_wrap(~'Express Regret x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -1138,7 +1000,7 @@ p3 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Abandon Treaties x\nNat. Attachment Scale') +
+  theme_bw() + facet_wrap(~'Defy Shaming x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -1160,7 +1022,7 @@ p4 <- aux %>%
                 position=position_dodge(0.4)) +
   geom_point(position=position_dodge(0.4)) + 
   geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw() + facet_wrap(~'Reject Criticism x\nNat. Attachment Scale') +
+  theme_bw() + facet_wrap(~'Reject Shaming x\nNat. Attachment Scale') +
   xlab('') + scale_color_manual(values=c("red", "blue")) +
   ylab('') + ylim(-1.01,1.01)
 
@@ -1174,9 +1036,11 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ## Hypothesis
 
 - What are the questions the experiment was designed to address?
+
   + In these two-wave survey, we studied the XXXX.
 
 -	What are the specific hypotheses to be tested?
+
   + We are testing whether respondents in a XXXX.
 
 ##	Subjects and Context
@@ -1191,16 +1055,16 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + Being a foreigner, or younger than 18 years old.
 
 - Procedures used to recruit and select participants
-  + -	The survey company sampled municipalities to match the demographic composition laid out by the national census alongside age, income, education, gender, and region. We used the 2018 quota published by the Brazilian Institute of Geography and Statistics (IBGE) as a reference. Moreover, the survey company allocated enumerators in strategic places with a large influx of people. Around 30 percent of responses were double-checked for consistency.
+  + The survey company sampled municipalities to match the demographic composition laid out by the national census alongside age, income, education, gender, and region. We used the 2018 quota published by the Brazilian Institute of Geography and Statistics (IBGE) as a reference. Moreover, the survey company allocated enumerators in strategic places with a large influx of people. Around 30 percent of responses were double-checked for consistency.
 
 - Recruitment dates defining the periods of recruitment and when the experiments were conducted.
-  + -	The first and second wave of the experiment occurred between January 13 and January 17, 2020. As this was a face-to-face survey experiment, enumerators recruited respondents at the street level.
+  + The first and second wave of the experiment occurred between January 13 and January 17, 2020. As this was a face-to-face survey experiment, enumerators recruited respondents at the street level.
 
 - Dates of any repeated
   + Not applicable.
 
 - Settings and locations where the data were collected
-  + -	Enumerators were distributed in approximately 120 municipalities which were randomly selected by a stratum of the region, nature of the municipality (state capital, other metropolitan or interior regions), federal state, and municipality population size. The DataFolha Institute selected municipalities on the basis of the 2018 Brazilian Demographic Census and the population projections issued that year by the Brazilian Institute of Geography and Statistics (IBGE). Enumerators collected the data face-to-face.
+  + Enumerators were distributed in approximately 120 municipalities which were randomly selected by a stratum of the region, nature of the municipality (state capital, other metropolitan or interior regions), federal state, and municipality population size. The DataFolha Institute selected municipalities on the basis of the 2018 Brazilian Demographic Census and the population projections issued that year by the Brazilian Institute of Geography and Statistics (IBGE). Enumerators collected the data face-to-face.
 
 - Where? Field? Lab? Etc.
   + Face-to-face survey.
@@ -1253,8 +1117,8 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 ## Treatments
 
 - Descriptions of the intervention:
-  + The intervention will consist of XXXX steps.
-    + Step 1: Collecting information on the extent to which the respondents agree or disagree with two statements that tap into a national attachment scale (Hermann 2017).
+  + The intervention will consist of three steps.
+    + Step 1: Collecting information on the extent to which the respondents agree or disagree with two statements that tap into a national attachment scale.
     + Step 2: Applying the survey experiment.
     + Step 3: Collecting standard demographic characteristics.
 
@@ -1269,7 +1133,8 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 7: Adversary shaming, Reject shaming.
     + Treatment 8: Adversary shaming, Defy shaming.
 
-  + In the second wave of the experiment we assigned each respondent to either the control condition or one of the treatment conditions. All respondents continued to hear about a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. While we mentioned that shaming came from a foreign country, we did not specify whether it is an ally or an adversary. However, we varied whether criticism was couched in *liberal internationalist* language or no information about the nature of criticism was provided. The range of possible responses to shaming continued to vary in terms of silence, regret, rejection, and defiance.
+  + In the second wave of the experiment we assigned each respondent to either the control condition or one of the treatment conditions. All respondents continued to hear about a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. While we mentioned that shaming came from a foreign country, we did not specify whether it is an ally or an adversary. However, we varied whether criticism was couched in liberal internationalist language or no information about the nature of criticism was provided. The range of possible responses to shaming continued to vary in terms of silence, regret, rejection, and defiance.
+
     + Treatment 1: Foreign country shaming, Remain silent.
     + Treatment 2: : Foreign country shaming, Express regret.
     + Treatment 3: Foreign country shaming, Reject shaming.
@@ -1279,13 +1144,12 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 7: Foreign country shaming, Liberal internationalist language, Reject shaming.
     + Treatment 8: Foreign country shaming, Liberal internationalist language, Defy shaming.
 
-
 - Experimental instructions
   + To introduce the experimental question, the enumerator reads the following instructions:
 “*Everyone talks about wildfires and deforestation in the Amazon forest. We will read some imaginary scenarios and ask what you think of each*”. Then the enumerator asks the questions.
 
 - How and when manipulations were administered
-  + -	The manipulation will be applied after the measurement of step one (see above), but before the measurement of the demographic variables.
+  + The manipulation will be applied after the measurement of step one (see above), but before the measurement of the demographic variables.
 
 - Method of delivery
   + The delivery was made by the enumerator reading the randomly-selected experimental vignette to the respondent.
@@ -1304,11 +1168,11 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + We use the variables age, income, education, gender, religion, race, and religion as **pre-treatment covariates**.
 
 - Survey Questionnaires
-  + First Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
-  + Second Wave: [Original Brazilian Portuguese](XXXX) version and [English translation](XXXX).
+  + First Wave: [English translation](https://github.com/umbertomig/environmental-politics-survey/blob/master/appendix/survey_instruments/wave1.pdf).
+  + Second Wave: [English translation](https://github.com/umbertomig/environmental-politics-survey/blob/master/appendix/survey_instruments/wave2.pdf).
 
 - Which outcomes and subgroup analysis were specified prior to the experiment?
-  + In the paper, we use a **national attachment scale** to measure heterogeneous effects at the individual level. Items are drawn from previous work on national attachment (Herrmann, 2017; Powers et al., 2019; Bayram, 2017). In particular, we test how individuals scoring differently in national attachment on a values scale interact with our treatment conditions. The national attachment scale consists of a combination of the following two questions.
+  + In the paper, we use a **national attachment scale** to measure heterogeneous effects at the individual level. Items are drawn from previous work on national attachment [@herrmann2017attachments; @rathbun2019moral; @bayram2017due]. In particular, we test how individuals scoring differently in national attachment on a values scale interact with our treatment conditions. The national attachment scale consists of a combination of the following two questions.
     + “*When someone says something bad about Brazil, you feel it is as if they say something bad about you.*”
     + “*Brazil should stand for national honor, even if it compromises its image in the world.*”
     + The response options for each item are “agree totally,” “agree partially,” “neither agree or disagree,” “disagree partially,” and “disagree totally.”
@@ -1334,6 +1198,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 6 (Adversary shaming, Express regret): `r as.numeric(table(wave1$trstatus)[6])` respondents.
     + Treatment 7 (Adversary shaming, Reject shaming): `r as.numeric(table(wave1$trstatus)[7])` respondents.
     + Treatment 8 (Adversary shaming, Defy shaming): `r as.numeric(table(wave1$trstatus)[8])` respondents.
+
   + In the second wave:
     + Treatment 1 (Foreign country shaming, Remain silent): `r as.numeric(table(wave2$trstatus)[1])` respondents.
     + Treatment 2 (Foreign country shaming, Express regret): `r as.numeric(table(wave2$trstatus)[2])` respondents.
@@ -1354,6 +1219,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 6 (Adversary shaming, Express regret): `r round(as.numeric(prop.table(table(wave1$trstatus)))[6]*100,2)` percent.
     + Treatment 7 (Adversary shaming, Reject shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[7]*100,2)` percent.
     + Treatment 8 (Adversary shaming, Defy shaming): `r round(as.numeric(prop.table(table(wave1$trstatus)))[8]*100,2)` percent.
+
   + In the second wave:
     + Treatment 1 (Foreign country shaming, Remain silent): `r round(as.numeric(prop.table(table(wave2$trstatus)))[1]*100,2)` percent.
     + Treatment 2 (Foreign country shaming, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[2]*100,2)` percent.
@@ -1378,50 +1244,78 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 - Describe statistical analysis
   + Linear regression analysis (OLS) with cluster-robust standard errors. We used the function `felm` from the package `lfe` in R. The package provides a straightforward way to estimate cluster-robust standard errors.
 
-- Means and standard deviations
-  + For the first wave:
+\newpage
 
-```{r}
+- Means and standard deviations
+  
+  + For the first wave:
+  
+```{r, w1means}
 wave1 %>% 
   group_by(trstatus) %>%
   summarise(`Mean Support` = round(mean(outcbin, na.rm=T), 3),
             `SD Suppor` = round(sd(outcbin, na.rm=T), 3),
             `SE Support` = round(sd(outcbin, na.rm=T)/sqrt(n()), 3)) %>%
   data.frame() %>%
-  kable(caption = 'Wave 1 -- Means and Std. Deviations', booktabs = T)  %>%
+  mutate(trstatus = gsub('Recognize Mistakes', 
+                         'Express regret', 
+                         trstatus)) %>%
+  mutate(trstatus = gsub('Reject Criticisms', 
+                         'Reject Shaming', 
+                         trstatus)) %>%
+  mutate(trstatus = gsub('Abandon International Treaties', 
+                         'Defy Shaming', 
+                         trstatus)) %>%
+  kable(booktabs = T)  %>%
   kable_styling(latex_options = c("hold_position","scale_down"))
 ```
-
+  
   + For the second wave:
-
-```{r}
+  
+```{r w2means, echo = FALSE}
 wave2 %>% 
   group_by(trstatus) %>%
   summarise(`Mean Support` = round(mean(outcbin, na.rm=T), 3),
             `SD Support` = round(sd(outcbin, na.rm=T), 3),
             `SE Support` = round(sd(outcbin, na.rm=T)/sqrt(n()), 3)) %>%
   data.frame() %>%
-  kable(caption = 'Wave 2 -- Means and Std. Deviations', booktabs = T)  %>%
+  mutate(trstatus = gsub('Recognize Mistakes', 
+                         'Express regret', 
+                         trstatus)) %>%
+  mutate(trstatus = gsub('Reject Criticisms', 
+                         'Reject Shaming', 
+                         trstatus)) %>%
+  mutate(trstatus = gsub('Abandon International Treaties', 
+                         'Defy Shaming', 
+                         trstatus)) %>%
+  mutate(trstatus = gsub('Amazon belongs to all humankind', 
+                         'Liberal Message', 
+                         trstatus)) %>%
+  kable(booktabs = T)  %>%
   kable_styling(latex_options = c("hold_position","scale_down"))
 ```
 
 - ITT
-  + Not apply
+  + Not applicable.
 
 - If use block randomization, ITT by block or overall means using IPW
   + Not applicable.
 
 - Standard errors:
+  
   + Cluster-robust standard errors, clustering at the Region level.
 
 - Attrition:
+  
   + Not applicable.
 
 - Analyze pre-treatment variables to check reasons
+  
   + See the pre-treatment balance section.
 
 - Missing data
-  + There no missing data in the treatment assignments. Most of the missing is generated by the `Don't know` answer in the primary outcomes. This was a voluntary answer that affected `r sum(is.na(wave1$outcbin))` out of `r nrow(wave1)` responses in the first wave, and `r sum(is.na(wave2$outcbin))` out of `r nrow(wave2)` responses in the second wave.
+  
+  + Most of the missing is generated by the `Don't know` answer in the primary outcomes. This was a voluntary answer that affected `r sum(is.na(wave1$outcbin))` out of `r nrow(wave1)` responses in the first wave, and `r sum(is.na(wave2$outcbin))` out of `r nrow(wave2)` responses in the second wave.
 
 - Frequency and percentage missing by group
   + See the descriptive statistics section for each of the waves.
@@ -1429,26 +1323,48 @@ wave2 %>%
 - Method for addressing missing data
   + Not applicable.
 
+\newpage
+
 - Summary missing data by subgroup
   + For the first wave:
-  
-```{r}
+```{r w1miss, echo = FALSE}
 tab <- table(wave1$trstatus, is.na(wave1$outcbin))
 colnames(tab) <- c('Valid', 'Missing')
+row.names(tab) <- gsub('Recognize Mistakes', 
+                       'Express regret', 
+                       row.names(tab))
+row.names(tab) <- gsub('Reject Criticisms', 
+                       'Reject Shaming', 
+                       row.names(tab))
+row.names(tab) <- gsub('Abandon International Treaties', 
+                       'Defy Shaming',
+                       row.names(tab))
 tab %>%
-  kable(caption = 'Wave 1 -- Missing Values', booktabs = T)  %>%
+  kable(booktabs = T)  %>%
+  kable_styling(latex_options = c("hold_position"))
+```
+  + For the second wave:
+```{r w2miss, echo = F}
+tab <- table(wave2$trstatus, is.na(wave2$outcbin))
+colnames(tab) <- c('Valid','Missing')
+row.names(tab) <- gsub('Recognize Mistakes', 
+                       'Express regret', 
+                       row.names(tab))
+row.names(tab) <- gsub('Reject Criticisms', 
+                       'Reject Shaming', 
+                       row.names(tab))
+row.names(tab) <- gsub('Abandon International Treaties', 
+                       'Defy Shaming',
+                       row.names(tab))
+row.names(tab) <- gsub('Amazon belongs to all humankind', 
+                       'Liberal Message',
+                       row.names(tab))
+tab %>%
+  kable(booktabs = T)  %>%
   kable_styling(latex_options = c("hold_position"))
 ```
 
-  + For the second wave:
-  
-```{r}
-tab <- table(wave2$trstatus, is.na(wave2$outcbin))
-colnames(tab) <- c('Valid','Missing')
-tab %>%
-  kable(caption = 'Wave 2 -- Missing Values', booktabs = T)  %>%
-  kable_styling(latex_options = c("hold_position"))
-```
+\newpage
 
 - Survey experiments:
   + A histogram of the weights for the first wave follows below.
@@ -1464,18 +1380,18 @@ hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
 ```
 
 - Reweighing procedures
-  - We only use the weights assigned by the DataFolha company. The weights assigned by DataFolha have the purpose of guarantee the representativeness of the Brazilian population. Heloisa Furia supervised the weight computations.
+  + We only use the weights assigned by the DataFolha Institute. The weights assigned by DataFolha have the purpose of guarantee the representativeness of the Brazilian population.
 
 ## Other information
 
 - IRB
-  + We received IRB from the FGV Human Subjects Research Committee. IRB Number: XXXX/2019.
+  + This study received IRB approval number 124/2019 from the FGV Ethics Committee (CEPH-FGV) on October 18, 2019.
 
 - Pre-registered? Where?
   + This experiment has not being pre-registered.
 
 - Funding? Role of funders in the experiment?
-  + The research has been funded by MacArthur Foundation and by Stanton Foundation. No funder interfered neither in the design nor in the implementation of this experiment.
+  + FGV. No funder interfered neither in the design nor in the implementation of this experiment.
 
 - Replication dataset? URL?
   + The replication data is in the following GitHub repository: [https://github.com/umbertomig/environmental-politics-survey](https://github.com/umbertomig/environmental-politics-survey).
