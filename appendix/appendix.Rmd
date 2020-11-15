@@ -89,8 +89,8 @@ In the wave 1 dataset (`wave1` R object), we have the following variables:
 7. **`more5mw`**: Respondent More than five minimum wage salaries.
 8. **`hsmore`**: Dummy for High School or more of education.
 9. **`outcbin`**: Dummy for support for governmental environmental decision.
-10. **`trsource`**: Treatment status denoting the source of the criticism.
-11. **`trgovresp`**: Treatment status denoting government response to the criticism.
+10. **`trsource`**: Treatment status denoting the source of the foreign shaming.
+11. **`trgovresp`**: Treatment status denoting government response to the foreign shaming. 
 12. **`trstatus`**: Treatment status as appeared in the survey instrument.
 13. **`natscale`**: National attachment scale.
 14. **`region`**: Brazilian region.
@@ -279,7 +279,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
           column.sep.width = '-2pt',
@@ -332,7 +332,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
           column.sep.width = '-2pt',
@@ -345,6 +345,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 ## Robustness Checks
 
 We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could potentially influence public attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Overall, all the results remain similar to the ones presented in the main models.
+
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -369,13 +370,13 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Public Support for Responses to Foreign Shaming. (pre-treatments as controls)',
+          title = 'Public Support for Responses to Foreign Shaming (pre-treatments as controls)',
           label = 'mainregw1prtr',
           align = T,
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
           notes.append = F,
@@ -424,7 +425,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) Adversary Shaming; (2) Remain Silent; (3) Silence upon Adversary Shaming.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
           notes.append = F,
@@ -567,9 +568,9 @@ In the wave 2 dataset (`wave2` R object), we have the following variables:
 6. **`income`**: Income levels.
 7. **`more5mw`**: Respondent More than five minimum wage salaries.
 8. **`hsmore`**: Dummy for High School or more of education.
-9. **`outcbin`**: Dummy for support for governmental environmental decision.
-10. **`trcontent`**: Treatment status that contrasted a control (no message) versus a liberal message stating the Amazon as a belonging to the humankind.
-11. **`trgovresp`**: Treatment status denoting government response to the criticism.
+9. **`outcbin`**: Dummy for support for the governmental environmental decision.
+10. **`trcontent`**: Treatment status that contrasted a control (no message) versus a liberal internationalist message.
+11. **`trgovresp`**: Treatment status denoting government response to the foreign shaming.
 12. **`trstatus`**: Treatment status as appeared in the survey instrument.
 13. **`natscale`**: National attachment scale.
 14. **`region`**: Brazilian region.
@@ -762,12 +763,12 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Public Support for Government Responses to the Nature of Shaming Message',
+          title = 'Public Support for Responses to the Nature of Shaming Message',
           label = 'mainregw2',
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon no Liberal Message.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           notes.append = F,
           column.sep.width = '-2pt',
@@ -817,7 +818,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}'),
           label = 'heteffw2',
           notes.append = F,
@@ -831,6 +832,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
 ## Robustness Checks
 
 We supplement our main analysis by running robustness checks. We add pre-treatment demographic characteristics that could change public attitudes toward foreign shaming. We add controls for education, income, gender, age, and religion. Overall, all the results remain similar to the ones presented in the main models.
+
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -855,13 +857,13 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
                                'Constant'),
           type = 'latex',
           style = 'apsr',
-          title = 'Public Support for Government Responses to the Nature of Shaming Message (pre-treatments as controls)',
+          title = 'Public Support for Responses to the Nature of Shaming Message (pre-treatments as controls)',
           label = 'mainregw2prtr',
           align = T,
           omit = c('age', 'female', 'evang', 'more5mw', 'hsmore'),
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon no Liberal Message.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
           notes.append = F,
@@ -909,7 +911,7 @@ stargazer(mod[[1]],mod[[2]],mod[[3]],
           align = T,
           notes = c('{\\footnotesize Cluster-robust SEs in parenthesis, clustered at the Brazilian region level.}', 
                     '{\\footnotesize Reference category: (1) No Liberal Message (control); (2) Remain Silent; (3) Silence upon No Liberal Message.}',
-                    '{\\footnotesize All estimates should be interpreted relative to its baseline category.}',
+                    '{\\footnotesize All estimates should be interpreted relative to their baseline category.}',
                     '{\\footnotesize Significance levels: $^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01}',
                     '{\\footnotesize Control variables: Female, Age, Evangelical, More than 5 Min. Wage, and Schooling.}'),
           label = 'heteffw2prtr',
@@ -1042,7 +1044,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 -	What are the specific hypotheses to be tested?
 
-  + We are testing whether respondents in a XXXX.
+    + We are testing whether respondents in a XXXX.
 
 ##	Subjects and Context
 
@@ -1080,6 +1082,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 - Random assignment
   + Simple random assignment within the region quota.
+  
 
 - Units of randomization
   + The randomization was performed within region quota at the respondent's level.
@@ -1139,10 +1142,10 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 2: : Foreign country shaming, Express regret.
     + Treatment 3: Foreign country shaming, Reject shaming.
     + Treatment 4: Foreign country shaming, Defy shaming.
-    + Treatment 5: Foreign country shaming, Liberal internationalist language, Remain silent.
-    + Treatment 6: Foreign country shaming, Liberal internationalist language, Express regret.
-    + Treatment 7: Foreign country shaming, Liberal internationalist language, Reject shaming.
-    + Treatment 8: Foreign country shaming, Liberal internationalist language, Defy shaming.
+    + Treatment 5: Foreign country shaming, Liberal internationalist message, Remain silent.
+    + Treatment 6: Foreign country shaming, Liberal Internationalist message, Express regret.
+    + Treatment 7: Foreign country shaming, Liberal Internationalist message, Reject shaming.
+    + Treatment 8: Foreign country shaming, Liberal Internationalist message, Defy shaming.
 
 - Experimental instructions
   + To introduce the experimental question, the enumerator reads the following instructions:
@@ -1182,13 +1185,13 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 ### CONSORT
 
-1. Number of subjects initially accessed for eligibility:
-    + We fielded a sample of 2001 and 2126 respondents in survey experiment 1 and survey experiment 2, respectively.
+- Number of subjects initially accessed for eligibility:
+    + We fielded a sample of 2001 and 2126 respondents in wave 1 and wave 2, respectively.
 
-2. Exclusions prior to random assignment
-   + There were no exclusions.
+- Exclusions prior to random assignment
+     + There were no exclusions.
 
-3. Subjects initially assigned to each experimental group
+- Subjects initially assigned to each experimental group
   + In the first wave:
     + Treatment 1 (Ally shaming, Remain silent): `r as.numeric(table(wave1$trstatus)[1])` respondents.
     + Treatment 2 (Ally shaming, Express regret): `r as.numeric(table(wave1$trstatus)[2])` respondents.
@@ -1204,12 +1207,12 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 2 (Foreign country shaming, Express regret): `r as.numeric(table(wave2$trstatus)[2])` respondents.
     + Treatment 3 (Foreign country shaming, Reject shaming): `r as.numeric(table(wave2$trstatus)[3])` respondents.
     + Treatment 4 (Foreign country shaming, Defy shaming): `r as.numeric(table(wave2$trstatus)[4])` respondents.
-    + Treatment 5 (Foreign country shaming, Liberal internationalist language, Remain silent): `r as.numeric(table(wave2$trstatus)[5])` respondents.
-    + Treatment 6 (Foreign country shaming, Liberal internationalist language, Express regret): `r as.numeric(table(wave2$trstatus)[6])` respondents.
-    + Treatment 7 (Foreign country shaming, Liberal internationalist language, Reject shaming): `r as.numeric(table(wave2$trstatus)[7])` respondents.
-    + Treatment 8 (Foreign country shaming, Liberal internationalist language, Defy shaming): `r as.numeric(table(wave2$trstatus)[8])` respondents.
+    + Treatment 5 (Foreign country shaming, Liberal Internationalist message, Remain silent): `r as.numeric(table(wave2$trstatus)[5])` respondents.
+    + Treatment 6 (Foreign country shaming, Liberal Internationalist message, Express regret): `r as.numeric(table(wave2$trstatus)[6])` respondents.
+    + Treatment 7 (Foreign country shaming, Liberal Internationalist message, Reject shaming): `r as.numeric(table(wave2$trstatus)[7])` respondents.
+    + Treatment 8 (Foreign country shaming, Liberal Internationalist message, Defy shaming): `r as.numeric(table(wave2$trstatus)[8])` respondents.
 
-4. Proportion received x not received intervention:
+- Proportion received x not received intervention:
   + In the first wave:
     + Treatment 1 (Ally shaming, Remain silent): `r round(as.numeric(prop.table(table(wave1$trstatus)))[1]*100,2)` percent.
     + Treatment 2 (Ally shaming, Express regret): `r round(as.numeric(prop.table(table(wave1$trstatus)))[2]*100,2)` percent.
@@ -1225,18 +1228,18 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 2 (Foreign country shaming, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[2]*100,2)` percent.
     + Treatment 3 (Foreign country shaming, Reject shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[3]*100,2)` percent.
     + Treatment 4 (Foreign country shaming, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[4]*100,2)` percent.
-    + Treatment 5 (Foreign country shaming, Liberal internationalist language, Remain silent): `r round(as.numeric(prop.table(table(wave2$trstatus)))[5]*100,2)` percent.
-    + Treatment 6 (Foreign country shaming, Liberal internationalist language, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[6]*100,2)` percent.
-    + Treatment 7 (Foreign country shaming, Liberal internationalist language, Reject shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[7]*100,2)` percent.
-    + Treatment 8 (Foreign country shaming, Liberal internationalist language, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[8]*100,2)` percent.
+    + Treatment 5 (Foreign country shaming, Liberal Internationalist message, Remain silent): `r round(as.numeric(prop.table(table(wave2$trstatus)))[5]*100,2)` percent.
+    + Treatment 6 (Foreign country shaming, Liberal Internationalist message, Express regret): `r round(as.numeric(prop.table(table(wave2$trstatus)))[6]*100,2)` percent.
+    + Treatment 7 (Foreign country shaming, Liberal Internationalist message, Reject shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[7]*100,2)` percent.
+    + Treatment 8 (Foreign country shaming, Liberal Internationalist message, Defy shaming): `r round(as.numeric(prop.table(table(wave2$trstatus)))[8]*100,2)` percent.
 
-5. Why did not receive intervention?
+- Why did not receive intervention?
     + The study is a case-control study.
 
-6. Number subjects each group dropped experiment
+- Number subjects each group dropped experiment
     + No respondent was dropped.
 
-7. Number included and any reason for exclusion
+- Number included and any reason for exclusion
     + Not applicable.
 
 ### Statistical analysis
@@ -1267,10 +1270,9 @@ wave1 %>%
                          'Defy Shaming', 
                          trstatus)) %>%
   kable(booktabs = T)  %>%
-  kable_styling(latex_options = c("hold_position","scale_down"))
+  kable_styling(latex_options = c("hold_position"))
 ```
-  
-  + For the second wave:
+    + For the second wave:
   
 ```{r w2means, echo = FALSE}
 wave2 %>% 
@@ -1292,7 +1294,7 @@ wave2 %>%
                          'Liberal Message', 
                          trstatus)) %>%
   kable(booktabs = T)  %>%
-  kable_styling(latex_options = c("hold_position","scale_down"))
+  kable_styling(latex_options = c("hold_position"))
 ```
 
 - ITT
@@ -1343,7 +1345,7 @@ tab %>%
   kable(booktabs = T)  %>%
   kable_styling(latex_options = c("hold_position"))
 ```
-  + For the second wave:
+  - For the second wave:
 ```{r w2miss, echo = F}
 tab <- table(wave2$trstatus, is.na(wave2$outcbin))
 colnames(tab) <- c('Valid','Missing')
@@ -1367,14 +1369,14 @@ tab %>%
 \newpage
 
 - Survey experiments:
-  + A histogram of the weights for the first wave follows below.
+  + A histogram of the weights for the wave 1 follows below.
   
 ```{r, fig.pos='h'}
 hist(wave1$wts, main = 'Weights Wave 1', xlab = 'Weights')
 ```
   
-  + A histogram of the weights for the second wave follows below.
-
+  + A histogram of the weights for the wave 2 follows below.
+  
 ```{r, fig.pos='h'}
 hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
 ```
