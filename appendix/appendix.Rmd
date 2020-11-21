@@ -1,11 +1,11 @@
 ---
 title: |
-       | Supplementary Materials for "Responses to Foreign Shaming over Climate Policy among Nationalist"
+       | Supplementary Materials for "Nationalism and Public Responses to International Climate Shaming"
 author: 
 - "Matias Spektor[^spektor]"
 - "Umberto Mignozzetti[^mignozzetti]"
 - "Guilherme N. Fasolin[^fasolin]"
-date: November 15, 2020
+date: November 23, 2020
 fontfamily: libertine
 fontawesome: yes
 fontsize: 12pt
@@ -78,25 +78,25 @@ load('data/environmental.RData')
 
 ## Descriptive Statistics
 
-In the wave 1 dataset (`wave1` R object), we have the following variables:
+In the wave 1 dataset (`wave1` R object) we have the following variables:
 
-1. **`nquest`**: 9-digit DataFolha Respondent Code.
+1. **`nquest`**: 9-digit Datafolha Respondent Code.
 2. **`female`**: Dummy for Female Respondent.
 3. **`age`**: Age.
 4. **`religion`**: 4-brackets religion levels.
 5. **`evang`**: Dummy for Evangelical respondent.
 6. **`income`**: Income levels.
-7. **`more5mw`**: Respondent More than five minimum wage salaries.
-8. **`hsmore`**: Dummy for High School or more of education.
-9. **`outcbin`**: Dummy for support for governmental environmental decision.
+7. **`more5mw`**: Respondent More than five minimum-wage salaries.
+8. **`hsmore`**: Dummy for High School or higher levels of education.
+9. **`outcbin`**: Dummy for support for government decision.
 10. **`trsource`**: Treatment status denoting the source of the foreign shaming.
 11. **`trgovresp`**: Treatment status denoting government response to the foreign shaming. 
-12. **`trstatus`**: Treatment status as appeared in the survey instrument.
+12. **`trstatus`**: Treatment status as appears in the survey instrument.
 13. **`natscale`**: National attachment scale.
 14. **`region`**: Brazilian region.
-15. **`wts`**: Weights computed by the DataFolha Institute.
+15. **`wts`**: Weights computed by the Datafolha Institute.
 
-Our analysis comes from a sample of `r dim(wave1)[1]` Brazilian administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave1)[1]` Brazilians administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w1ds} shows the demographic characteristics of our sample.
 
 ```{r}
 aux <- wave1 %>%
@@ -183,7 +183,7 @@ The pre-treatment variables in this wave were:
 5. Income
 6. Religion
 
-To have a well-balanced sample across the experiment, with demographic groups evenly distributed across them, we perform two types of balancing tests. For the continuous variables, we perform an F-test, and for the categorical variables, we run a Chi-Square test. Table \ref{baltestw1} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
+To have a well-balanced sample across the experiment with demographic groups evenly distributed across them, we perform two types of balancing tests. For the continuous variables, we perform an F-test, and for the categorical variables, we run a Chi-Square test. Table \ref{baltestw1} shows that the results of these tests are insignificant (p-value above 0.10), meaning that we have a well-balanced sample across all treatment levels.
 
 ```{r, echo = FALSE}
 # Age
@@ -558,25 +558,25 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 ## Descriptive Statistics
 
-In the wave 2 dataset (`wave2` R object), we have the following variables:
+In the wave 2 dataset (`wave2` R object) we have the following variables:
 
-1. **`nquest`**: 9-digit DataFolha Respondent Code.
+1. **`nquest`**: 9-digit Datafolha Respondent Code.
 2. **`female`**: Dummy for Female Respondent.
 3. **`age`**: Age.
 4. **`religion`**: 4-brackets religion levels.
 5. **`evang`**: Dummy for Evangelical respondent.
 6. **`income`**: Income levels.
-7. **`more5mw`**: Respondent More than five minimum wage salaries.
-8. **`hsmore`**: Dummy for High School or more of education.
-9. **`outcbin`**: Dummy for support for the governmental environmental decision.
+7. **`more5mw`**: Respondent More than five minimum-wage salaries.
+8. **`hsmore`**: Dummy for High School or higher levels of education.
+9. **`outcbin`**: Dummy for support for the government decision.
 10. **`trcontent`**: Treatment status that contrasted a control (no message) versus a liberal internationalist message.
 11. **`trgovresp`**: Treatment status denoting government response to the foreign shaming.
-12. **`trstatus`**: Treatment status as appeared in the survey instrument.
+12. **`trstatus`**: Treatment status as appears in the survey instrument.
 13. **`natscale`**: National attachment scale.
 14. **`region`**: Brazilian region.
-15. **`wts`**: Weights computed by the DataFolha Institute.
+15. **`wts`**: Weights computed by the Datafolha Institute.
 
-Our analysis comes from a sample of `r dim(wave2)[1]` Brazilian administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
+Our analysis comes from a sample of `r dim(wave2)[1]` Brazilians administered in January 2020 by the Datafolha Institute as part of a larger, unrelated omnibus survey. We provide a detailed explanation about the sampling methodology in the APSA Experimental Report section of this appendix. Table \ref{tab1w2ds} shows the demographic characteristics of our sample.
 
 ```{r, results = 'hide'}
 aux <- wave2 %>%
@@ -720,7 +720,7 @@ aux %>%
   kable_styling(latex_options = "hold_position")
 ```
 
-As we can see, the results are insignificant (p-value above $0.10$) for all variables but religion. We show in the robustness checks that adding religion as a control variable does not alter our results. Under (p-value $<$ 0.1) we still have a 10\% chance of a spurious correlation between the treatment and one pre-treatment variable. For instance, in six comparison tests, under a p-value of 0.1, we have $1-(1-0.1)^6=0.469$, or 46.9\% chance of at least one test be significant at random.
+As we can see, the results are insignificant (p-value above $0.10$) for all variables but religion. We show in the robustness checks that adding religion as a control variable does not alter our results. Under (p-value $<$ 0.1) we still have a 10\% chance of a spurious correlation between the treatment and one pre-treatment variable. For instance, in six comparison tests, under a p-value of 0.1, we have $1-(1-0.1)^6=0.469$, or 46.9\% chance of at least one test being significant at random.
 
 Using Benjamini–Hochberg correction [@benjamini1995controlling], let $p_k$ the k-th ordered p-value, $m$ the number of tests, and $\alpha$ the significance threshold. We have to adjust the p-values using the following formula:
 
@@ -738,7 +738,7 @@ aux %>%
 
 ## Treatment Effects
 
-We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign shaming, which are displayed in \ref{mainregw2}.
+We begin our analysis by examining the main effects of our treatment conditions on public support for government responses to foreign shaming, which are displayed in table \ref{mainregw2}.
 
 ```{r, echo = FALSE, results = 'asis'}
 mod <- list()
@@ -1036,7 +1036,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 # APSA Experimental Section Report
 
-## Hypothesis
+## Hypotheses
 
 - What are the questions the experiment was designed to address?
 
@@ -1066,7 +1066,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + Not applicable.
 
 - Settings and locations where the data were collected
-  + Enumerators were distributed in approximately 120 municipalities which were randomly selected by a stratum of the region, nature of the municipality (state capital, other metropolitan or interior regions), federal state, and municipality population size. The DataFolha Institute selected municipalities on the basis of the 2018 Brazilian Demographic Census and the population projections issued that year by the Brazilian Institute of Geography and Statistics (IBGE). Enumerators collected the data face-to-face.
+  + Enumerators were distributed in approximately 120 municipalities which were randomly selected by a stratum of the region, nature of the municipality (state capital, other metropolitan or interior regions), federal state, and municipality population size. The Datafolha Institute selected municipalities on the basis of the 2018 Brazilian Demographic Census and the population projections issued that year by the Brazilian Institute of Geography and Statistics (IBGE). Enumerators collected the data face-to-face.
 
 - Where? Field? Lab? Etc.
   + Face-to-face survey.
@@ -1126,7 +1126,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Step 3: Collecting standard demographic characteristics.
 
 - Describe the treatment and control groups
-  + In the first wave of the survey experiment we assigned each respondent to one of the eight treatments. All respondents heard a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. We then randomized the source of criticism – ally and friend and adversary. Finally, we randomized all four possible reactions to shaming: silence, regret, rejection, and defiance. All the treatment conditions are outlined below.
+  + In the first wave of the survey experiment we assigned each respondent to one of the eight treatments. All respondents heard a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. We then randomized the source of criticism – ally and adversary. Finally, we randomized all four possible reactions to shaming: silence, regret, rejection, and defiance. All the treatment conditions are outlined below.
     + Treatment 1: Ally shaming, Remain silent.
     + Treatment 2: Ally shaming, Express regret.
     + Treatment 3: Ally shaming, Reject shaming.
@@ -1136,7 +1136,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 7: Adversary shaming, Reject shaming.
     + Treatment 8: Adversary shaming, Defy shaming.
 
-  + In the second wave of the experiment we assigned each respondent to either the control condition or one of the treatment conditions. All respondents continued to hear about a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. While we mentioned that shaming came from a foreign country, we did not specify whether it is an ally or an adversary. However, we varied whether criticism was couched in liberal internationalist language or no information about the nature of criticism was provided. The range of possible responses to shaming continued to vary in terms of silence, regret, rejection, and defiance.
+  + In the second wave of the experiment we assigned each respondent to either the control condition or one of the treatment conditions. All respondents continued to hear about a hypothetical situation in which Brazil suffered shaming accusations by a foreign actor for poorly managing fires and deforestation in the Amazon forest. While we mentioned that shaming came from a foreign country, we did not specify whether it was an ally or an adversary. However, we varied whether criticism was couched in liberal internationalist language or no information about the nature of criticism was provided. The range of possible responses to shaming continued to vary in terms of silence, regret, rejection, and defiance.
 
     + Treatment 1: Foreign country shaming, Remain silent.
     + Treatment 2: : Foreign country shaming, Express regret.
@@ -1158,7 +1158,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
   + The delivery was made by the enumerator reading the randomly-selected experimental vignette to the respondent.
 
 - Software used to administer the treatment
-  + DataFolha Institute uses the SurveyToGo software on their tablets. Respondents also read cards with the description of the control or one of the treatment conditions.
+  + Datafolha Institute uses the SurveyToGo software on their tablets. Respondents also read cards with the description of the control or one of the treatment conditions.
 
 ## Results
 
@@ -1176,7 +1176,7 @@ ggarrange(p1, p2, p3, p4, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 - Which outcomes and subgroup analysis were specified prior to the experiment?
   + In the paper, we use a **national attachment scale** to measure heterogeneous effects at the individual level. Items are drawn from previous work on national attachment [@herrmann2017attachments; @rathbun2019moral; @bayram2017due]. In particular, we test how individuals scoring differently in national attachment on a values scale interact with our treatment conditions. The national attachment scale consists of a combination of the following two questions.
-    + “*When someone says something bad about Brazil, you feel it is as if they say something bad about you.*”
+    + “*When someone says something bad about Brazil, you feel as if they say something bad about you.*”
     + “*Brazil should stand for national honor, even if it compromises its image in the world.*”
     + The response options for each item are “agree totally,” “agree partially,” “neither agree or disagree,” “disagree partially,” and “disagree totally.”
 
@@ -1317,7 +1317,7 @@ wave2 %>%
 
 - Missing data
   
-  + Most of the missing is generated by the `Don't know` answer in the primary outcomes. This was a voluntary answer that affected `r sum(is.na(wave1$outcbin))` out of `r nrow(wave1)` responses in the first wave, and `r sum(is.na(wave2$outcbin))` out of `r nrow(wave2)` responses in the second wave.
+  + Most of the missing data is generated by the `Don't know` answer in the primary outcomes. This was a voluntary answer that affected `r sum(is.na(wave1$outcbin))` out of `r nrow(wave1)` responses in the first wave, and `r sum(is.na(wave2$outcbin))` out of `r nrow(wave2)` responses in the second wave.
 
 - Frequency and percentage missing by group
   + See the descriptive statistics section for each of the waves.
@@ -1382,7 +1382,7 @@ hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
 ```
 
 - Reweighing procedures
-  + We only use the weights assigned by the DataFolha Institute. The weights assigned by DataFolha have the purpose of guarantee the representativeness of the Brazilian population.
+  + We only use the weights assigned by the Datafolha Institute. The weights assigned by Datafolha have the purpose of guaranteeing the representativeness of the Brazilian population.
 
 ## Other information
 
@@ -1390,10 +1390,10 @@ hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
   + This study received IRB approval number 124/2019 from the FGV Ethics Committee (CEPH-FGV) on October 18, 2019.
 
 - Pre-registered? Where?
-  + This experiment has not being pre-registered.
+  + This experiment has not been pre-registered.
 
 - Funding? Role of funders in the experiment?
-  + FGV. No funder interfered neither in the design nor in the implementation of this experiment.
+  + Funding was provided by Fundação Getulio Vargas (FGV). No funder interfered either in the design or in the implementation of this experiment.
 
 - Replication dataset? URL?
   + The replication data is in the following GitHub repository: [https://github.com/umbertomig/environmental-politics-survey](https://github.com/umbertomig/environmental-politics-survey).
