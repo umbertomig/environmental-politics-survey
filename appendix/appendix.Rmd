@@ -1393,7 +1393,7 @@ hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
   + This experiment has not been pre-registered.
 
 - Funding? Role of funders in the experiment?
-  + Funding was provided by Fundação Getulio Vargas (FGV). No funder interfered either in the design or in the implementation of this experiment.
+  + Funding was provided by the Stanton Foundation. No funder interfered either in the design or in the implementation of this experiment.
 
 - Replication dataset? URL?
   + The replication data is in the following GitHub repository: [https://github.com/umbertomig/environmental-politics-survey](https://github.com/umbertomig/environmental-politics-survey).
