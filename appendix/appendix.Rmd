@@ -1040,11 +1040,11 @@ ggarrange(p2, p4, p3, p1, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 - What are the questions the experiment was designed to address?
 
-  + In these two-wave survey, we studied the XXXX.
+  + In these two-wave survey, we experimentally test whether the source of the criticism and the nature of the critical message affect how individuals respond to international climate shaming.
 
 -	What are the specific hypotheses to be tested?
 
-    + We are testing whether respondents in a XXXX.
+    + We are testing whether the varying levels of nationalism among members of the public affect how individuals respond to international climate shaming.
 
 ##	Subjects and Context
 
@@ -1058,6 +1058,8 @@ ggarrange(p2, p4, p3, p1, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 
 - Procedures used to recruit and select participants
   + The survey company sampled municipalities to match the demographic composition laid out by the national census alongside age, income, education, gender, and region. We used the 2018 quota published by the Brazilian Institute of Geography and Statistics (IBGE) as a reference. Moreover, the survey company allocated enumerators in strategic places with a large influx of people. Around 30 percent of responses were double-checked for consistency.
+  
+  \pagebreak
 
 - Recruitment dates defining the periods of recruitment and when the experiments were conducted.
   + The first and second wave of the experiment occurred between January 13 and January 17, 2020. As this was a face-to-face survey experiment, enumerators recruited respondents at the street level.
@@ -1083,7 +1085,6 @@ ggarrange(p2, p4, p3, p1, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
 - Random assignment
   + Simple random assignment within the region quota.
 
-\pagebreak
 
 - Units of randomization
   + The randomization was performed within region quota at the respondent's level.
@@ -1148,11 +1149,11 @@ ggarrange(p2, p4, p3, p1, ncol=2, nrow=2, common.legend = TRUE, legend="bottom")
     + Treatment 7: Foreign country shaming, Liberal Internationalist message, Reject shaming.
     + Treatment 8: Foreign country shaming, Liberal Internationalist message, Defy shaming.
 
+\pagebreak
+
 - Experimental instructions
   + To introduce the experimental question, the enumerator reads the following instructions:
 “*Everyone talks about wildfires and deforestation in the Amazon forest. We will read some imaginary scenarios and ask what you think of each*”. Then the enumerator asks the questions.
-
-\pagebreak
 
 - How and when manipulations were administered
   + The manipulation will be applied after the measurement of step one (see above), but before the measurement of the demographic variables.
@@ -1325,8 +1326,6 @@ wave2 %>%
 - Method for addressing missing data
   + Not applicable.
 
-\newpage
-
 - Summary missing data by subgroup
   + For the first wave:
 ```{r w1miss, echo = FALSE}
@@ -1346,7 +1345,7 @@ tab %>%
   kable_styling(latex_options = c("hold_position"))
 ```
   
-  \vspace{1cm}
+  \pagebreak
   
   + For the second wave:
 ```{r w2miss, echo = F}
@@ -1369,7 +1368,6 @@ tab %>%
   kable_styling(latex_options = c("hold_position"))
 ```
 
-\newpage
 
 - Survey experiments:
   + A histogram of the weights for the wave 1 follows below.
@@ -1378,13 +1376,13 @@ tab %>%
 hist(wave1$wts, main = 'Weights Wave 1', xlab = 'Weights')
 ```
   
+\pagebreak
+
   + A histogram of the weights for the wave 2 follows below.
   
 ```{r, fig.pos='h'}
 hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
 ```
-
-\pagebreak
 
 - Reweighing procedures
   + We only use the weights assigned by the Datafolha Institute. The weights assigned by Datafolha have the purpose of guaranteeing the representativeness of the Brazilian population.
@@ -1396,6 +1394,8 @@ hist(wave2$wts, main = 'Weights Wave 2', xlab = 'Weights')
 
 - Pre-registered? Where?
   + This experiment has not been pre-registered.
+
+\pagebreak
 
 - Funding? Role of funders in the experiment?
   + Funding was provided by the Stanton Foundation. No funder interfered either in the design or in the implementation of this experiment.
